@@ -1,3 +1,6 @@
-# pos-fiap-architecture-java-group-6
-repositorio para publicação do projeto de pos de arquitetura em java na fiap
-teste
+# OdontoFlow
+Uma API de gestão para clinicas de odontologia.
+Feito pelos alunos do grupo 10 da pós graduação em arquitetura e desenvolvimento Java da FIAP.
+
+### Para acessar o banco de dados H2:
+http://localhost:8080/h2-console
