@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
-@RestController()
+@RestController
 @RequestMapping("/patient")
 public class PatientController {
 
