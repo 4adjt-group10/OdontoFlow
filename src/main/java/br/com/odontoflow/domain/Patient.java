@@ -59,4 +59,10 @@ public class Patient {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public void merge(PatientFormDTO patientFormDTO) {
+        this.name = patientFormDTO.name();
+        this.document = patientFormDTO.document();
+        this.address.merge(patientFormDTO.address());
+    }
 }

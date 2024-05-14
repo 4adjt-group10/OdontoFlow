@@ -9,6 +9,8 @@ import br.com.odontoflow.repository.ProfessionalRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProfessionalService {
 
@@ -29,12 +31,22 @@ public class ProfessionalService {
         return new ProfessionalDTO(professional);
     }
 
+    @Transactional
+    public void update(Long id, ProfessionalFormDTO professionalFormDTO) {
+        Professional professional = findProfessionalById(id);
+        professional.merge(professionalFormDTO);
+    }
+
     public Professional findByDocument(String document) {
         return professionalRepository.findByDocument(document).orElseThrow(() -> new ControllerNotFoundException("Professional not found"));
     }
 
     public Professional findProfessionalById(Long id) {
         return professionalRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Professional not found"));
+    }
+
+    public List<ProfessionalDTO> listAllProfessionals() {
+        return professionalRepository.findAll().stream().map(ProfessionalDTO::new).toList();
     }
 
 }

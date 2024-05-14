@@ -35,4 +35,9 @@ public class PatientController {
     public ResponseEntity<List<PatientDTO>> listAll() {
         return new ResponseEntity<>(patientService.listAllUsers(), OK);
     }
+
+    @PutMapping("/update/{id}")
+    public void update(@PathVariable("id") Long id, @RequestBody PatientFormDTO patientFormDTO) {
+        patientService.update(id, patientFormDTO);
+    }
 }
