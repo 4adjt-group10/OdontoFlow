@@ -54,4 +54,11 @@ public class Professional {
     public void setAddress(Address address) {
         this.address = address;
     }
+
+    public void merge(ProfessionalFormDTO professionalFormDTO) {
+        this.name = professionalFormDTO.name();
+        this.document = professionalFormDTO.document();
+        this.type = professionalFormDTO.type();
+        this.address.merge(professionalFormDTO.address());
+    }
 }

@@ -34,4 +34,9 @@ public class PatientController {
     public List<PatientDTO> listAll() {
         return patientService.listAllUsers();
     }
+
+    @PutMapping("/update/{id}")
+    public void update(@PathVariable("id") Long id, @RequestBody PatientFormDTO patientFormDTO) {
+        patientService.update(id, patientFormDTO);
+    }
 }
