@@ -1,11 +1,11 @@
 package br.com.odontoflow.service;
 
+import br.com.odontoflow.controller.exception.ControllerNotFoundException;
 import br.com.odontoflow.domain.Address;
 import br.com.odontoflow.domain.Patient;
 import br.com.odontoflow.dto.patient.PatientDTO;
 import br.com.odontoflow.dto.patient.PatientFormDTO;
 import br.com.odontoflow.repository.PatientRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class PatientService {
     }
 
     public Patient findUserById(Long userId) {
-        return patientRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User not found"));
+        return patientRepository.findById(userId).orElseThrow(() -> new ControllerNotFoundException("User not found"));
     }
 
     public List<PatientDTO> listAllUsers() {

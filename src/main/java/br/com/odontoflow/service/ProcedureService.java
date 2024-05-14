@@ -1,10 +1,10 @@
 package br.com.odontoflow.service;
 
+import br.com.odontoflow.controller.exception.ControllerNotFoundException;
 import br.com.odontoflow.domain.Procedure;
 import br.com.odontoflow.dto.procedure.ProcedureDTO;
 import br.com.odontoflow.dto.procedure.ProcedureFormDTO;
 import br.com.odontoflow.repository.ProcedureRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,10 +30,10 @@ public class ProcedureService {
     }
 
     public Procedure findForName(String name) {
-        return procedureRepository.findByNome(name).orElseThrow(() -> new EntityNotFoundException("Procedure not found"));
+        return procedureRepository.findByNome(name).orElseThrow(() -> new ControllerNotFoundException("Procedure not found"));
     }
 
     public Procedure findById(Long id) {
-        return procedureRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Procedure not found"));
+        return procedureRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Procedure not found"));
     }
 }

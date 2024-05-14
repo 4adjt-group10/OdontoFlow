@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
-
+import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/procedure")
 public class ProcedureController {
@@ -26,12 +26,12 @@ public class ProcedureController {
     }
 
     @GetMapping("/list")
-    public List<ProcedureDTO> findAllProcedures(){
-        return procedureService.findAll();
+    public ResponseEntity<List<ProcedureDTO>> findAllProcedures(){
+        return new ResponseEntity<>(procedureService.findAll(), OK);
     }
 
     @GetMapping("/search/{name}")
-    public ProcedureDTO findProcedureForName(@PathVariable("name") String name){
-        return new ProcedureDTO(procedureService.findForName(name));
+    public ResponseEntity<ProcedureDTO> findProcedureForName(@PathVariable("name") String name){
+        return new ResponseEntity<>(new ProcedureDTO(procedureService.findForName(name)), OK);
     }
 }
