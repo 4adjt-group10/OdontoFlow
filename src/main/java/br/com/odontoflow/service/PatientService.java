@@ -22,6 +22,7 @@ public class PatientService {
         this.addressService = addressService;
     }
 
+    //TODO: podemos deixar de usar o addressService.register por conta do @Transactional?
     @Transactional
     public PatientDTO register(PatientFormDTO patientFormDTO) {
         Patient patient = new Patient(patientFormDTO);

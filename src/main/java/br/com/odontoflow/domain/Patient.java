@@ -15,8 +15,6 @@ public class Patient {
     private String name;
     @Column(name = "document", length = 11, nullable = false, unique = true)
     private String document;
-    //TODO: Mudar para entidade com id, data e hora, id de paciente, descrição
-    private String patientRecords;
     @OneToOne
     private Address address;
     private LocalDateTime createdAt;
@@ -26,7 +24,6 @@ public class Patient {
     public Patient(PatientFormDTO patientFormDTO) {
         this.name = patientFormDTO.name();
         this.document = patientFormDTO.document();
-        this.patientRecords = patientFormDTO.patientRecords();
         this.createdAt = LocalDateTime.now();
     }
 
@@ -49,10 +46,6 @@ public class Patient {
 
     public String getDocument() {
         return document;
-    }
-
-    public String getPatientRecords() {
-        return patientRecords;
     }
 
     public Address getAddress() {

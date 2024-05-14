@@ -12,7 +12,7 @@
 	<artifactId>odontoflow</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>OdontoFlow</name>
-	<description>A management API for odonotology clinics</description>
+	<description>A management API for dental clinics</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

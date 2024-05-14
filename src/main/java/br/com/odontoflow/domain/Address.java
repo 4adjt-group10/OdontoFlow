@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Address")
 public class Address {
-
+//TODO: Tornar embeddable para paciente e profissional (deixará de ser uma entidade)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
