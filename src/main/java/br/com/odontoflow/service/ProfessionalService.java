@@ -1,11 +1,11 @@
 package br.com.odontoflow.service;
 
+import br.com.odontoflow.controller.exception.ControllerNotFoundException;
 import br.com.odontoflow.domain.Address;
-import br.com.odontoflow.dto.professional.ProfessionalDTO;
-import br.com.odontoflow.repository.ProfessionalRepository;
 import br.com.odontoflow.domain.professional.Professional;
+import br.com.odontoflow.dto.professional.ProfessionalDTO;
 import br.com.odontoflow.dto.professional.ProfessionalFormDTO;
-import jakarta.persistence.EntityNotFoundException;
+import br.com.odontoflow.repository.ProfessionalRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -30,11 +30,11 @@ public class ProfessionalService {
     }
 
     public Professional findByDocument(String document) {
-        return professionalRepository.findByDocument(document).orElseThrow(() -> new EntityNotFoundException("Professional not found"));
+        return professionalRepository.findByDocument(document).orElseThrow(() -> new ControllerNotFoundException("Professional not found"));
     }
 
     public Professional findProfessionalById(Long id) {
-        return professionalRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Professional not found"));
+        return professionalRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Professional not found"));
     }
 
 }
