@@ -1,8 +1,6 @@
 package br.com.odontoflow.dto.patient;
 
-import br.com.odontoflow.domain.Patient;
 import br.com.odontoflow.domain.PatientRecord;
-import br.com.odontoflow.domain.professional.Professional;
 import br.com.odontoflow.dto.professional.ProfessionalDTO;
 
 import java.time.LocalDateTime;
