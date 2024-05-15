@@ -1,9 +1,10 @@
-package br.com.odontoflow.application.professional;
+package br.com.odontoflow.domain.professional;
 
 import br.com.odontoflow.application.ControllerNotFoundException;
-import br.com.odontoflow.application.address.AddressService;
+import br.com.odontoflow.application.professional.ProfessionalDTO;
+import br.com.odontoflow.application.professional.ProfessionalFormDTO;
+import br.com.odontoflow.domain.address.AddressService;
 import br.com.odontoflow.domain.address.Address;
-import br.com.odontoflow.domain.professional.Professional;
 import br.com.odontoflow.infrastructure.professional.ProfessionalRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

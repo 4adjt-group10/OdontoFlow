@@ -1,7 +1,8 @@
-package br.com.odontoflow.application.procedure;
+package br.com.odontoflow.domain.procedure;
 
 import br.com.odontoflow.application.ControllerNotFoundException;
-import br.com.odontoflow.domain.procedure.Procedure;
+import br.com.odontoflow.application.procedure.ProcedureDTO;
+import br.com.odontoflow.application.procedure.ProcedureFormDTO;
 import br.com.odontoflow.infrastructure.procedure.ProcedureRepository;
 import org.springframework.stereotype.Service;
 

@@ -1,9 +1,10 @@
-package br.com.odontoflow.application.patient;
+package br.com.odontoflow.domain.patient;
 
 import br.com.odontoflow.application.ControllerNotFoundException;
-import br.com.odontoflow.application.address.AddressService;
+import br.com.odontoflow.application.patient.PatientDTO;
+import br.com.odontoflow.application.patient.PatientFormDTO;
+import br.com.odontoflow.domain.address.AddressService;
 import br.com.odontoflow.domain.address.Address;
-import br.com.odontoflow.domain.patient.Patient;
 import br.com.odontoflow.infrastructure.patient.PatientRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

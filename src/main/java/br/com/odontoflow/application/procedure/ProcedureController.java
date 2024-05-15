@@ -1,5 +1,6 @@
 package br.com.odontoflow.application.procedure;
 
+import br.com.odontoflow.domain.procedure.ProcedureService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

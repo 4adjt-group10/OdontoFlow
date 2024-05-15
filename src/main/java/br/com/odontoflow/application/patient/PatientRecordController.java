@@ -1,5 +1,6 @@
 package br.com.odontoflow.application.patient;
 
+import br.com.odontoflow.domain.patient.PatientRecordService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

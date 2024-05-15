@@ -1,5 +1,6 @@
 package br.com.odontoflow.application.professional;
 
+import br.com.odontoflow.domain.professional.ProfessionalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

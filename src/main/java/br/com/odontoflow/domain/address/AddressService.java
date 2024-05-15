@@ -1,7 +1,7 @@
-package br.com.odontoflow.application.address;
+package br.com.odontoflow.domain.address;
 
 import br.com.odontoflow.application.ControllerNotFoundException;
-import br.com.odontoflow.domain.address.Address;
+import br.com.odontoflow.application.address.AddressFormDTO;
 import br.com.odontoflow.infrastructure.address.AddressRepository;
 import org.springframework.stereotype.Service;
 

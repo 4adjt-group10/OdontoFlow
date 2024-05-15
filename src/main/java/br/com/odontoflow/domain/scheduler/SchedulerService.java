@@ -1,10 +1,11 @@
-package br.com.odontoflow.application.scheduler;
+package br.com.odontoflow.domain.scheduler;
 
-import br.com.odontoflow.application.patient.PatientService;
-import br.com.odontoflow.application.procedure.ProcedureService;
-import br.com.odontoflow.application.professional.ProfessionalService;
+import br.com.odontoflow.application.scheduler.SchedulerDTO;
+import br.com.odontoflow.application.scheduler.SchedulerRegisterFormDTO;
+import br.com.odontoflow.domain.patient.PatientService;
+import br.com.odontoflow.domain.procedure.ProcedureService;
+import br.com.odontoflow.domain.professional.ProfessionalService;
 import br.com.odontoflow.domain.procedure.Procedure;
-import br.com.odontoflow.domain.scheduler.Scheduler;
 import br.com.odontoflow.infrastructure.scheduler.SchedulerRepository;
 import br.com.odontoflow.domain.patient.Patient;
 import br.com.odontoflow.domain.professional.Professional;

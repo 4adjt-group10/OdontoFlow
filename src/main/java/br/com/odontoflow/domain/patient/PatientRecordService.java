@@ -1,10 +1,10 @@
-package br.com.odontoflow.application.patient;
+package br.com.odontoflow.domain.patient;
 
-import br.com.odontoflow.domain.patient.Patient;
-import br.com.odontoflow.domain.patient.PatientRecord;
+import br.com.odontoflow.application.patient.PatientRecordDTO;
+import br.com.odontoflow.application.patient.PatientRecordFormDTO;
 import br.com.odontoflow.domain.professional.Professional;
 import br.com.odontoflow.infrastructure.patient.PatientRecordRepository;
-import br.com.odontoflow.application.professional.ProfessionalService;
+import br.com.odontoflow.domain.professional.ProfessionalService;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
