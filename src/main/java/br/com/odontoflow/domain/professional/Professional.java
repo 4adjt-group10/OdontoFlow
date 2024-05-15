@@ -1,7 +1,7 @@
 package br.com.odontoflow.domain.professional;
 
-import br.com.odontoflow.domain.Address;
-import br.com.odontoflow.dto.professional.ProfessionalFormDTO;
+import br.com.odontoflow.domain.address.Address;
+import br.com.odontoflow.application.professional.ProfessionalFormDTO;
 import jakarta.persistence.*;
 
 @Entity
