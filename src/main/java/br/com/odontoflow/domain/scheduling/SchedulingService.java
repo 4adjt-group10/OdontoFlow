@@ -14,6 +14,7 @@ import br.com.odontoflow.domain.professional.Professional;
 import br.com.odontoflow.domain.professional.ProfessionalService;
 import br.com.odontoflow.infrastructure.scheduling.SchedulingRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -90,6 +91,7 @@ public class SchedulingService {
     * */
 
 //    @Scheduled(cron = "0 0/15 9-20 * * MON-SAT")
+    @Async
     @Transactional
     @Scheduled(cron = "*/5 * * * * *") //Apenas para testes locais, roda a cada 5s
     public void checkLateAppointments() {
@@ -116,6 +118,7 @@ public class SchedulingService {
      * */
 
 //    @Scheduled(cron = "0 0 9-20 * * MON-SAT")
+    @Async
     @Transactional
     @Scheduled(cron = "*/5 * * * * *") //Apenas para testes locais, roda a cada 5s
     public void checkLateSchedulesHourly() {
