@@ -120,7 +120,7 @@ public class SchedulingService {
 //    @Scheduled(cron = "0 0 9-20 * * MON-SAT")
     @Async
     @Transactional
-    @Scheduled(cron = "*/5 * * * * *") //Apenas para testes locais, roda a cada 5s
+    @Scheduled(cron = "*/20 * * * * *") //Apenas para testes locais, roda a cada 20s
     public void checkLateSchedulesHourly() {
         List<Scheduling> lateSchedules = schedulingRepository.findAllByStatus(LATE);
         lateSchedules.forEach(scheduling -> {
