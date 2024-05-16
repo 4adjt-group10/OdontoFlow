@@ -19,13 +19,16 @@ public class Patient {
     @OneToOne
     private Address address;
     private LocalDateTime createdAt;
-    //TODO: Migrar lógica para scheduler
-    private boolean late;
 
     public Patient(PatientFormDTO patientFormDTO) {
         this.name = patientFormDTO.name();
         this.document = patientFormDTO.document();
         this.createdAt = LocalDateTime.now();
+    }
+
+    public Patient(String name, String document) {
+        this.name = name;
+        this.document = document;
     }
 
     @Deprecated(since = "Only for use of frameworks")
@@ -51,10 +54,6 @@ public class Patient {
 
     public Address getAddress() {
         return address;
-    }
-
-    public boolean isLate() {
-        return late;
     }
 
     public void setAddress(Address address) {

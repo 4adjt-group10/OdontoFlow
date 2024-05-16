@@ -58,4 +58,12 @@ public class PatientRecord {
         this.description = formDTO.description();
         this.date = formDTO.getDate();
     }
+
+    public void isLate() {
+        this.description = description.concat("  OBS: Agendamento com atraso do paciente.");
+    }
+
+    public void isCanceled() {
+        this.description = description.concat("  OBS: Agendamento cancelado por atraso do paciente.");
+    }
 }

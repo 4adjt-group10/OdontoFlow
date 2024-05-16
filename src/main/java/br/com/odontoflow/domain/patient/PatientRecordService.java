@@ -54,4 +54,9 @@ public class PatientRecordService {
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
         return new PatientRecordDTO(patientRecord);
     }
+
+    public PatientRecord findLastByPatientId(Long patientId){
+        return patientRecordRepository.findFirstByPatient_IdOrderByDateDesc(patientId)
+                .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
+    }
 }
