@@ -45,4 +45,9 @@ public class PatientService {
         return patientRepository.findAll().stream().map(PatientDTO::new).toList();
     }
 
+    public Patient findByDocumentOrCreate(String patientName, String patientDocument) {
+        return patientRepository.findByDocument(patientDocument)
+                .orElseGet(() -> patientRepository.save(new Patient(patientName, patientDocument)));
+    }
+
 }
