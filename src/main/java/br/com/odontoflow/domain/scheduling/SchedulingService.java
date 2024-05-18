@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 
 import static br.com.odontoflow.domain.scheduling.SchedulingStatus.LATE;
 
@@ -51,7 +51,7 @@ public class SchedulingService {
         Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument());
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
-        Scheduling scheduling = new Scheduling(patient, procedure, professional, formDTO.getAppointment(), formDTO.status());
+        Scheduling scheduling = new Scheduling(patient, procedure, professional, formDTO.appointment(), formDTO.status());
         schedulingRepository.save(scheduling);
         patientRecordService.register(new PatientRecordFormDTO(formDTO.observation(),
                 formDTO.appointment(),
@@ -62,18 +62,16 @@ public class SchedulingService {
         return new SchedulingDTO(scheduling);
     }
 
-    public List<SchedulingDTO> findAllByPatientId(Long id, LocalDate date) {
-        if(Objects.nonNull(date)){
-            return schedulingRepository.findAllByPatient_IdAndDate(id, date).stream().map(SchedulingDTO::new).toList();
-        }
-        return schedulingRepository.findAllByPatient_Id(id).stream().map(SchedulingDTO::new).toList();
+    public List<SchedulingDTO> findAllByPatientId(Long id, Optional<LocalDate> date) {
+        return date.map(d -> schedulingRepository.findAllByPatient_IdAndDate(id, d))
+                .orElseGet(() -> schedulingRepository.findAllByPatient_Id(id))
+                .stream().map(SchedulingDTO::new).toList();
     }
 
-    public List<SchedulingDTO> findAllByProfessionalId(Long id, LocalDate date) {
-        if(Objects.nonNull(date)){
-            return schedulingRepository.findAllByProfessional_IdAndDate(id, date).stream().map(SchedulingDTO::new).toList();
-        }
-        return schedulingRepository.findAllByProfessional_Id(id).stream().map(SchedulingDTO::new).toList();
+    public List<SchedulingDTO> findAllByProfessionalId(Long id, Optional<LocalDate> date) {
+        return date.map(d -> schedulingRepository.findAllByProfessional_IdAndDate(id, d))
+                .orElseGet(() -> schedulingRepository.findAllByProfessional_Id(id))
+                .stream().map(SchedulingDTO::new).toList();
     }
 
     public Scheduling findById(Long id) {
@@ -86,7 +84,7 @@ public class SchedulingService {
         Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument());
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
-        scheduling.merge(new SchedulingUpdateDTO(patient, procedure, professional, formDTO.getAppointment(), formDTO.status()));
+        scheduling.merge(new SchedulingUpdateDTO(patient, procedure, professional, formDTO.appointment(), formDTO.status()));
     }
 
     /*

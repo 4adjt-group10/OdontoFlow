@@ -4,19 +4,14 @@ import br.com.odontoflow.domain.scheduling.SchedulingStatus;
 
 import java.time.LocalDateTime;
 
-import static java.time.LocalDateTime.parse;
-import static java.time.format.DateTimeFormatter.ofPattern;
-
 public record SchedulingFormDTO(
         String patientName,
         String patientDocument,
         Long procedureId,
         Long professionalId,
-        String appointment,
+        LocalDateTime appointment,
         SchedulingStatus status,
         String observation
 ) {
-    public LocalDateTime getAppointment() {
-        return parse(appointment, ofPattern("dd/MM/yyyy HH:mm:ss"));
-    }
+
 }
