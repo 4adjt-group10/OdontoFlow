@@ -1,5 +1,7 @@
 package br.com.odontoflow.application.procedure;
 
-public record ProcedureFormDTO(String name, Double price) {
+import java.math.BigDecimal;
+
+public record ProcedureFormDTO(String name, BigDecimal price) {
 
 }

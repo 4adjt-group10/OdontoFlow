@@ -33,15 +33,15 @@ public class PatientService {
 
     @Transactional
     public void update(Long id, PatientFormDTO patientFormDTO) {
-        Patient patient = findUserById(id);
+        Patient patient = findPatientById(id);
         patient.merge(patientFormDTO);
     }
 
-    public Patient findUserById(Long userId) {
-        return patientRepository.findById(userId).orElseThrow(() -> new ControllerNotFoundException("User not found"));
+    public Patient findPatientById(Long patientId) {
+        return patientRepository.findById(patientId).orElseThrow(() -> new ControllerNotFoundException("Patient not found"));
     }
 
-    public List<PatientDTO> listAllUsers() {
+    public List<PatientDTO> listAll() {
         return patientRepository.findAll().stream().map(PatientDTO::new).toList();
     }
 
@@ -49,5 +49,7 @@ public class PatientService {
         return patientRepository.findByDocument(patientDocument)
                 .orElseGet(() -> patientRepository.save(new Patient(patientName, patientDocument)));
     }
+
+    //TODO: Implementar lógica para atualizar dados do paciente caso a ultima consulta tenha ocorrido a mais de 6 meses
 
 }

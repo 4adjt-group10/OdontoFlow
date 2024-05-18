@@ -27,7 +27,7 @@ public class PatientRecordService {
     }
 
     public PatientRecordDTO register(PatientRecordFormDTO formDTO){
-        Patient patient = patientService.findUserById(formDTO.patientId());
+        Patient patient = patientService.findPatientById(formDTO.patientId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
         PatientRecord patientRecord = new PatientRecord(formDTO.description(), formDTO.getDate(), patient, professional);
         patientRecordRepository.save(patientRecord);

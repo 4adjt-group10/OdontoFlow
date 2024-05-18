@@ -25,13 +25,13 @@ public class PatientController {
     }
 
     @GetMapping("/search/{id}")
-    public ResponseEntity<PatientDTO> search(@PathVariable("id") Long userId) {
-        return new ResponseEntity<>(new PatientDTO(patientService.findUserById(userId)), OK);
+    public ResponseEntity<PatientDTO> search(@PathVariable("id") Long patientId) {
+        return new ResponseEntity<>(new PatientDTO(patientService.findPatientById(patientId)), OK);
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<PatientDTO>> listAll() {
-        return new ResponseEntity<>(patientService.listAllUsers(), OK);
+        return new ResponseEntity<>(patientService.listAll(), OK);
     }
 
     @PutMapping("/update/{id}")

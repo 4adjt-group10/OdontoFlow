@@ -9,7 +9,9 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
@@ -22,4 +24,13 @@ public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
     List<Scheduling> findAllByAppointmentsToDay(@Param("date") LocalDate date);
 
     List<Scheduling> findAllByStatus(SchedulingStatus status);
+
+    List<Scheduling> findAllByAppointmentBetween(LocalDateTime now, LocalDateTime next24Hours);
+
+    Optional<Scheduling> findFirstByPatient_DocumentAndStatusOrderByAppointmentDesc(String document, SchedulingStatus status);
+
+    default Optional<Scheduling> findByDocumentAndStatus(String document, SchedulingStatus status) {
+        return findFirstByPatient_DocumentAndStatusOrderByAppointmentDesc(document, status);
+    }
+
 }
