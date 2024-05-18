@@ -17,6 +17,6 @@ public record SchedulingFormDTO(
         String observation
 ) {
     public LocalDateTime getAppointment() {
-        return parse(appointment, ofPattern("dd-MM-yyy HH:mm:ss"));
+        return parse(appointment, ofPattern("dd/MM/yyyy HH:mm:ss"));
     }
 }

@@ -32,5 +32,8 @@ public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
     default Optional<Scheduling> findByDocumentAndStatus(String document, SchedulingStatus status) {
         return findFirstByPatient_DocumentAndStatusOrderByAppointmentDesc(document, status);
     }
-
+    @Query(value = "SELECT * FROM Scheduling s WHERE s.patient_id =:id and CAST(s.appointment AS DATE) = :date", nativeQuery = true)
+    List<Scheduling> findAllByPatient_IdAndDate(Long id, LocalDate date);
+    @Query(value = "SELECT * FROM Scheduling s WHERE s.professional_id =:id and CAST(s.appointment AS DATE) = :date", nativeQuery = true)
+    List<Scheduling> findAllByProfessional_IdAndDate(Long id, LocalDate date);
 }

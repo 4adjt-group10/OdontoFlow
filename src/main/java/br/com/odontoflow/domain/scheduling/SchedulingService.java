@@ -18,8 +18,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 import static br.com.odontoflow.domain.scheduling.SchedulingStatus.LATE;
 
@@ -60,11 +62,17 @@ public class SchedulingService {
         return new SchedulingDTO(scheduling);
     }
 
-    public List<SchedulingDTO> findAllByPatientId(Long id) {
+    public List<SchedulingDTO> findAllByPatientId(Long id, LocalDate date) {
+        if(Objects.nonNull(date)){
+            return schedulingRepository.findAllByPatient_IdAndDate(id, date).stream().map(SchedulingDTO::new).toList();
+        }
         return schedulingRepository.findAllByPatient_Id(id).stream().map(SchedulingDTO::new).toList();
     }
 
-    public List<SchedulingDTO> findAllByProfessionalId(Long id) {
+    public List<SchedulingDTO> findAllByProfessionalId(Long id, LocalDate date) {
+        if(Objects.nonNull(date)){
+            return schedulingRepository.findAllByProfessional_IdAndDate(id, date).stream().map(SchedulingDTO::new).toList();
+        }
         return schedulingRepository.findAllByProfessional_Id(id).stream().map(SchedulingDTO::new).toList();
     }
 
@@ -82,15 +90,15 @@ public class SchedulingService {
     }
 
     /*
-    * A expressão cron "0 0/15 9-20 * * MON-SAT" significa:
-    * 0: No início do minuto (segundos).
-    * 0/15: A cada 15 minutos.
-    * 9-20: Entre as 9 da manhã e as 8 da noite (horas).
-    * *: Qualquer dia do mês.
-    * *: Qualquer mês.
-    * MON-SAT: De segunda a sábado.
-    * O método checkAppointments será executado a cada 15 minutos de segunda a sábado, das 09:00 da manhã às 20:00 da noite.
-    * */
+     * A expressão cron "0 0/15 9-20 * * MON-SAT" significa:
+     * 0: No início do minuto (segundos).
+     * 0/15: A cada 15 minutos.
+     * 9-20: Entre as 9 da manhã e as 8 da noite (horas).
+     * *: Qualquer dia do mês.
+     * *: Qualquer mês.
+     * MON-SAT: De segunda a sábado.
+     * O método checkAppointments será executado a cada 15 minutos de segunda a sábado, das 09:00 da manhã às 20:00 da noite.
+     * */
 //    @Scheduled(cron = "0 0/15 9-20 * * MON-SAT")
     @Async
     @Transactional
