@@ -7,6 +7,7 @@ import br.com.odontoflow.domain.professional.Professional;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static br.com.odontoflow.domain.scheduling.SchedulingStatus.*;
 
@@ -110,4 +111,9 @@ public class Scheduling {
         this.professional = updateDTO.professional();
         this.status = updateDTO.status();
     }
+    public String getAppointmentFormated() {
+
+        return appointment.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
 }
