@@ -56,7 +56,7 @@ public class PatientRecord {
 
     public void merge(PatientRecordFormDTO formDTO) {
         this.description = formDTO.description();
-        this.date = formDTO.getDate();
+        this.date = formDTO.date();
     }
 
     public void isLate() {
