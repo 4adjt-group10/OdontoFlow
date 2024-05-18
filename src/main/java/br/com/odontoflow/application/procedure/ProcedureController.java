@@ -32,4 +32,11 @@ public class ProcedureController {
     public ResponseEntity<ProcedureDTO> findProcedureForName(@PathVariable("name") String name){
         return new ResponseEntity<>(new ProcedureDTO(procedureService.findForName(name)), OK);
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") Long id,
+                                                        @RequestBody ProcedureFormDTO procedureFormDTO){
+        procedureService.update(id, procedureFormDTO);
+        return new ResponseEntity<>(OK);
+    }
 }
