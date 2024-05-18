@@ -17,7 +17,7 @@ public class Scheduling {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
     @ManyToOne
     @JoinColumn(name = "procedure_id")
@@ -66,12 +66,12 @@ public class Scheduling {
         return appointment;
     }
 
-    public String getUserName() {
+    public String getPatientName() {
         return patient.getName();
     }
 
     public String getProcedureName() {
-        return procedure.getNome();
+        return procedure.getName();
     }
 
     public String getProfessionalName() {

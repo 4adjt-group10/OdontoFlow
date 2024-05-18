@@ -25,6 +25,7 @@ public class SchedulingController {
         return schedulingService.findAllByPatientId(id);
     }
 
+    //TODO: Adicionar data como parametro opcional
     @GetMapping("/list/professional/{id}")
     public List<SchedulingDTO> listByProfessional(@PathVariable("id") Long id) {
         return schedulingService.findAllByProfessionalId(id);

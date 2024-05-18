@@ -29,7 +29,7 @@ public class ProcedureService {
     }
 
     public Procedure findForName(String name) {
-        return procedureRepository.findByNome(name).orElseThrow(() -> new ControllerNotFoundException("Procedure not found"));
+        return procedureRepository.findByName(name).orElseThrow(() -> new ControllerNotFoundException("Procedure not found"));
     }
 
     public Procedure findById(Long id) {

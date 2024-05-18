@@ -2,9 +2,11 @@ package br.com.odontoflow.application.procedure;
 
 import br.com.odontoflow.domain.procedure.Procedure;
 
-public record ProcedureDTO(String nome, Double valor) {
+import java.math.BigDecimal;
 
-    public ProcedureDTO(Procedure procedimento) {
-        this(procedimento.getNome(), procedimento.getValor());
+public record ProcedureDTO(String name, BigDecimal price) {
+
+    public ProcedureDTO(Procedure procedure) {
+        this(procedure.getName(), procedure.getPrice());
     }
 }

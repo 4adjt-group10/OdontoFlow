@@ -55,6 +55,8 @@ public class SchedulingService {
                 formDTO.appointment(),
                 patient.getId(),
                 professional.getId()));
+        //TODO: send notification to external service
+        System.out.println("New appointment: " + scheduling);
         return new SchedulingDTO(scheduling);
     }
 
@@ -89,7 +91,6 @@ public class SchedulingService {
     * MON-SAT: De segunda a sábado.
     * O método checkAppointments será executado a cada 15 minutos de segunda a sábado, das 09:00 da manhã às 20:00 da noite.
     * */
-
 //    @Scheduled(cron = "0 0/15 9-20 * * MON-SAT")
     @Async
     @Transactional
@@ -116,7 +117,6 @@ public class SchedulingService {
      * MON-SAT: De segunda a sábado.
      * O método será executado a cada hora, de segunda a sábado, das 9 da manhã às 8 da noite.
      * */
-
 //    @Scheduled(cron = "0 0 9-20 * * MON-SAT")
     @Async
     @Transactional
@@ -131,4 +131,29 @@ public class SchedulingService {
         });
     }
 
+    /*
+     * A expressão cron "0 0 9-20 * * MON-SAT" significa:
+     * 0: No início do minuto (segundos).
+     * 0: No início da hora (minutos).
+     * 20: às 8 da noite.
+     * *: Qualquer dia do mês.
+     * *: Qualquer mês.
+     * MON-SAT: De segunda a sábado.
+     * O método será executado uma vez por dia, de segunda a sábado, às 20:00 (8 da noite).
+     * */
+    @Async
+    @Transactional
+    @Scheduled(cron = "0 0 20 * * MON-SAT") // Executa uma vez por dia, de segunda a sábado, das 09:00 às 20:00
+    public void checkAppointmentsInNext24Hours() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime next24Hours = now.plusHours(24);
+        List<Scheduling> upcomingSchedules = schedulingRepository.findAllByAppointmentBetween(now, next24Hours);
+        upcomingSchedules.forEach(scheduling -> {
+            // TODO: send notification to external service
+            System.out.println("Upcoming appointment in next 24 hours: " + scheduling);
+        });
+    }
+
+    //TODO: Implementar uma agenda de horários disponíveis para cada profissional
+    //TODO: Implementar lógica de reagendamento de consultas (permitir com no mínimo 6hrs de antecedência)
 }
