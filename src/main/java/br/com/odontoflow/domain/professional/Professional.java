@@ -21,6 +21,7 @@ public class Professional {
     private String document;
     @OneToOne
     private Address address;
+    //TODO: Em vez de ter o Type, criar a entidade Dentist e a entidade Assistant?
     @Enumerated(EnumType.STRING)
     private ProfessionalType type;
     @ManyToMany
@@ -29,6 +30,8 @@ public class Professional {
         joinColumns = @JoinColumn(name = "professional_id"),
         inverseJoinColumns = @JoinColumn(name = "procedure_id"))
     private List<Procedure> procedures;
+    @OneToMany(mappedBy = "professional")
+    private List<ProfessionalAvailability> availability;
 
     @Deprecated(since = "Only for use of frameworks")
     public Professional() {
@@ -39,6 +42,11 @@ public class Professional {
         this.document = professionalFormDTO.document();
         this.address = new Address(professionalFormDTO.address());
         this.type = professionalFormDTO.type();
+    }
+
+    public Professional (ProfessionalFormDTO professionalFormDTO, List<ProfessionalAvailability> availability) {
+        this(professionalFormDTO);
+        this.availability = availability;
     }
 
     public Long getId() {
@@ -77,6 +85,10 @@ public class Professional {
 
     public void addProcedure(Procedure procedure) {
         this.procedures.add(procedure);
+    }
+
+    public List<ProfessionalAvailability> getAvailability() {
+        return availability;
     }
 
     public void merge(ProfessionalFormDTO professionalFormDTO, List<Procedure> procedures) {
