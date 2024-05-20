@@ -1,8 +1,8 @@
 package br.com.odontoflow.domain.address;
 
-import br.com.odontoflow.application.ControllerNotFoundException;
 import br.com.odontoflow.application.address.AddressFormDTO;
 import br.com.odontoflow.infrastructure.address.AddressRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +20,7 @@ public class AddressService {
     }
 
     public Address findById(Long id) {
-        return addressRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Address not found"));
+        return addressRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Address not found"));
     }
 
 }

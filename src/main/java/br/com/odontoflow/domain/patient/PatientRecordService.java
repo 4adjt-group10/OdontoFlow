@@ -35,10 +35,11 @@ public class PatientRecordService {
     }
 
     @Transactional
-    public void update(Long id, PatientRecordFormDTO formDTO){
+    public PatientRecordDTO update(Long id, PatientRecordFormDTO formDTO){
         PatientRecord patientRecord = patientRecordRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
         patientRecord.merge(formDTO);
+        return new PatientRecordDTO(patientRecord);
     }
 
     public List<PatientRecordDTO> findByPatientId(Long patientId){

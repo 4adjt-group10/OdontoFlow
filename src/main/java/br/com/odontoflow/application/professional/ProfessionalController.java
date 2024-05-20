@@ -22,53 +22,58 @@ public class ProfessionalController {
 
     @PostMapping("/create")
     public ResponseEntity<ProfessionalDTO> professionalRegister(@RequestBody ProfessionalFormDTO professionalFormDTO){
-        return new ResponseEntity<>(professionalService.register(professionalFormDTO), CREATED);
+        return ResponseEntity.status(CREATED).body(professionalService.register(professionalFormDTO));
     }
 
     @GetMapping("/list")
-    public List<ProfessionalDTO> listAll() {
-        return professionalService.listAllProfessionals();
+    public ResponseEntity<List<ProfessionalDTO>> listAll() {
+        return ResponseEntity.ok(professionalService.listAllProfessionals());
     }
 
     @PutMapping("/update/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody ProfessionalFormDTO professionalFormDTO) {
-        professionalService.update(id, professionalFormDTO);
+    public ResponseEntity<ProfessionalDTO> update(@PathVariable("id") Long id, @RequestBody ProfessionalFormDTO professionalFormDTO) {
+        return ResponseEntity.ok(professionalService.update(id, professionalFormDTO));
+    }
+
+    @PostMapping("/availability/create")
+    public ResponseEntity<ProfessionalAvailabilityDTO> addRegister(@RequestBody ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO){
+        return ResponseEntity.status(CREATED).body(professionalService.registerAvailability(professionalAvailabilityFormDTO));
     }
 
     @GetMapping("/availability/list-all")
-    public List<ProfessionalAvailabilityDTO> listAllAvailabilities() {
-        return professionalService.listAllAvailabilities();
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAllAvailabilities() {
+        return ResponseEntity.ok(professionalService.listAllAvailabilities());
     }
 
     @GetMapping("/availability/{professionalId}")
-    public List<ProfessionalAvailabilityDTO> listAvailabilities(@PathVariable("professionalId") Long id) {
-        return professionalService.listAvailabilitiesByProfessionalId(id);
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilities(@PathVariable("professionalId") Long id) {
+        return ResponseEntity.ok(professionalService.listAvailabilitiesByProfessionalId(id));
     }
 
     @GetMapping("/availability/date/{date}")
-    public List<ProfessionalAvailabilityDTO> listAvailabilitiesByDate(@PathVariable("date") LocalDate date) {
-        return professionalService.listAvailabilitiesByDate(date);
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByDate(@PathVariable("date") LocalDate date) {
+        return ResponseEntity.ok(professionalService.listAvailabilitiesByDate(date));
     }
 
     @GetMapping("/availability/day/{dayOfWeek}")
-    public List<ProfessionalAvailabilityDTO> listAvailabilitiesByDayOfWeek(@PathVariable("dayOfWeek") DayOfWeek dayOfWeek) {
-        return professionalService.listAvailabilitiesByDayOfWeek(dayOfWeek.getValue());
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByDayOfWeek(@PathVariable("dayOfWeek") DayOfWeek dayOfWeek) {
+        return ResponseEntity.ok(professionalService.listAvailabilitiesByDayOfWeek(dayOfWeek.getValue()));
     }
 
     @GetMapping("/availability/hour/{hour}")
-    public List<ProfessionalAvailabilityDTO> listAvailabilitiesByHour(@PathVariable("hour") Integer hour) {
-        return professionalService.listAvailabilitiesByHour(hour);
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByHour(@PathVariable("hour") Integer hour) {
+        return ResponseEntity.ok(professionalService.listAvailabilitiesByHour(hour));
     }
 
     @GetMapping("/availability/procedure/{id}")
-    public ProfessionalAvailabilityDTO listAvailabilitiesByProcedure(@PathVariable("id") Long id) {
-        return new ProfessionalAvailabilityDTO(professionalService.findByProdecureId(id));
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByProcedure(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(professionalService.findByProcedureId(id));
     }
 
     @PutMapping("/availability/update/{id}")
-    public void updateAvailability(@PathVariable("id") Long id,
-                                   @RequestBody ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO) {
-        professionalService.updateAvailability(id, professionalAvailabilityFormDTO);
+    public ResponseEntity<ProfessionalAvailabilityDTO> updateAvailability(@PathVariable("id") Long id,
+                                                                       @RequestBody ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO) {
+        return ResponseEntity.ok(professionalService.updateAvailability(id, professionalAvailabilityFormDTO));
     }
 
 }

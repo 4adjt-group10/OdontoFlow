@@ -1,6 +1,5 @@
 package br.com.odontoflow.domain.scheduling;
 
-import br.com.odontoflow.application.ControllerNotFoundException;
 import br.com.odontoflow.application.patient.PatientRecordFormDTO;
 import br.com.odontoflow.application.scheduling.SchedulingDTO;
 import br.com.odontoflow.application.scheduling.SchedulingFormDTO;
@@ -15,6 +14,7 @@ import br.com.odontoflow.domain.professional.ProfessionalAvailability;
 import br.com.odontoflow.domain.professional.ProfessionalService;
 import br.com.odontoflow.infrastructure.professional.ProfessionalAvailabilityRepository;
 import br.com.odontoflow.infrastructure.scheduling.SchedulingRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -83,16 +83,17 @@ public class SchedulingService {
     }
 
     public Scheduling findById(Long id) {
-        return schedulingRepository.findById(id).orElseThrow(() -> new ControllerNotFoundException("Schedule not found"));
+        return schedulingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Schedule not found"));
     }
 
     @Transactional
-    public void update(Long id, SchedulingFormDTO formDTO){
+    public SchedulingDTO update(Long id, SchedulingFormDTO formDTO){
         Scheduling scheduling = findById(id);
         Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument());
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
         scheduling.merge(new SchedulingUpdateDTO(patient, procedure, professional, formDTO.appointment(), formDTO.status()));
+        return new SchedulingDTO(scheduling);
     }
 
     /*

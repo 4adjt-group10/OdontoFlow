@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 
 @RestController
 @RequestMapping("/patient")
@@ -21,21 +20,21 @@ public class PatientController {
 
     @PostMapping("/create")
     public ResponseEntity<PatientDTO> register(@RequestBody PatientFormDTO patientFormDTO) {
-        return new ResponseEntity<>(patientService.register(patientFormDTO), CREATED);
+        return ResponseEntity.status(CREATED).body(patientService.register(patientFormDTO));
     }
 
     @GetMapping("/search/{id}")
     public ResponseEntity<PatientDTO> search(@PathVariable("id") Long patientId) {
-        return new ResponseEntity<>(new PatientDTO(patientService.findPatientById(patientId)), OK);
+        return ResponseEntity.ok(new PatientDTO(patientService.findPatientById(patientId)));
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<PatientDTO>> listAll() {
-        return new ResponseEntity<>(patientService.listAll(), OK);
+        return ResponseEntity.ok(patientService.listAll());
     }
 
     @PutMapping("/update/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody PatientFormDTO patientFormDTO) {
-        patientService.update(id, patientFormDTO);
+    public ResponseEntity<PatientDTO> update(@PathVariable("id") Long id, @RequestBody PatientFormDTO patientFormDTO) {
+        return ResponseEntity.ok(patientService.update(id, patientFormDTO));
     }
 }

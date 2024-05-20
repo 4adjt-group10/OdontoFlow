@@ -20,26 +20,26 @@ public class PatientRecordController {
 
     @PostMapping("/create")
     public ResponseEntity<PatientRecordDTO> register(@RequestBody PatientRecordFormDTO formDTO) {
-        return new ResponseEntity<>(patientRecordService.register(formDTO), CREATED);
+        return ResponseEntity.status(CREATED).body(patientRecordService.register(formDTO));
     }
 
     @GetMapping("/search/{id}")
-    public PatientRecordDTO searchById(@PathVariable("id") Long patientId) {
-        return patientRecordService.findById(patientId);
+    public ResponseEntity<PatientRecordDTO> searchById(@PathVariable("id") Long patientId) {
+        return ResponseEntity.ok(patientRecordService.findById(patientId));
     }
 
     @GetMapping("/list/patient/{id}")
-    public List<PatientRecordDTO> listByPatientId(@PathVariable("id") Long patientId) {
-        return patientRecordService.findByPatientId(patientId);
+    public ResponseEntity<List<PatientRecordDTO>> listByPatientId(@PathVariable("id") Long patientId) {
+        return ResponseEntity.ok(patientRecordService.findByPatientId(patientId));
     }
 
     @GetMapping("/list/professional/{id}")
-    public List<PatientRecordDTO> listByProfessionalId(@PathVariable("id") Long professionalId) {
-        return patientRecordService.findByProfessionalId(professionalId);
+    public ResponseEntity<List<PatientRecordDTO>> listByProfessionalId(@PathVariable("id") Long professionalId) {
+        return ResponseEntity.ok(patientRecordService.findByProfessionalId(professionalId));
     }
 
     @PutMapping("/update/{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody PatientRecordFormDTO formDTO) {
-        patientRecordService.update(id, formDTO);
+    public ResponseEntity<PatientRecordDTO> updatePatientRecord(@PathVariable("id") Long id, @RequestBody PatientRecordFormDTO formDTO) {
+        return ResponseEntity.ok(patientRecordService.update(id, formDTO));
     }
 }
