@@ -11,7 +11,9 @@ import br.com.odontoflow.domain.patient.PatientService;
 import br.com.odontoflow.domain.procedure.Procedure;
 import br.com.odontoflow.domain.procedure.ProcedureService;
 import br.com.odontoflow.domain.professional.Professional;
+import br.com.odontoflow.domain.professional.ProfessionalAvailability;
 import br.com.odontoflow.domain.professional.ProfessionalService;
+import br.com.odontoflow.infrastructure.professional.ProfessionalAvailabilityRepository;
 import br.com.odontoflow.infrastructure.scheduling.SchedulingRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Async;
@@ -33,17 +35,20 @@ public class SchedulingService {
     private final SchedulingRepository schedulingRepository;
     private final ProfessionalService professionalService;
     private final PatientRecordService patientRecordService;
+    private final ProfessionalAvailabilityRepository professionalAvailabilityRepository;
 
     public SchedulingService(SchedulingRepository schedulingRepository,
                              PatientService patientService,
                              ProfessionalService professionalService,
                              ProcedureService procedureService,
-                             PatientRecordService patientRecordService) {
+                             PatientRecordService patientRecordService,
+                             ProfessionalAvailabilityRepository availabilityRepository) {
         this.schedulingRepository = schedulingRepository;
         this.patientService = patientService;
         this.professionalService = professionalService;
         this.procedureService = procedureService;
         this.patientRecordService = patientRecordService;
+        this.professionalAvailabilityRepository = availabilityRepository;
     }
 
     @Transactional
@@ -51,8 +56,11 @@ public class SchedulingService {
         Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument());
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
+        ProfessionalAvailability availability = professionalService
+                .findAvailabilityByProfessionalAndAvailableTime(professional.getId(), formDTO.appointment());
         Scheduling scheduling = new Scheduling(patient, procedure, professional, formDTO.appointment(), formDTO.status());
         schedulingRepository.save(scheduling);
+        professionalAvailabilityRepository.delete(availability);
         patientRecordService.register(new PatientRecordFormDTO(formDTO.observation(),
                 formDTO.appointment(),
                 patient.getId(),

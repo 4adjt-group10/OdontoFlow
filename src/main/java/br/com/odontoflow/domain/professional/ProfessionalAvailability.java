@@ -1,5 +1,6 @@
 package br.com.odontoflow.domain.professional;
 
+import br.com.odontoflow.application.professional.ProfessionalAvailabilityFormDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -41,5 +42,9 @@ public class ProfessionalAvailability {
 
     public String getProfessionalName() {
         return professional.getName();
+    }
+
+    public void merge(ProfessionalAvailabilityFormDTO formDTO) {
+        this.availableTime = formDTO.availableTime();
     }
 }

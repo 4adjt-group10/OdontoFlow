@@ -2,6 +2,7 @@ package br.com.odontoflow.domain.professional;
 
 import br.com.odontoflow.application.ControllerNotFoundException;
 import br.com.odontoflow.application.professional.ProfessionalAvailabilityDTO;
+import br.com.odontoflow.application.professional.ProfessionalAvailabilityFormDTO;
 import br.com.odontoflow.application.professional.ProfessionalDTO;
 import br.com.odontoflow.application.professional.ProfessionalFormDTO;
 import br.com.odontoflow.domain.address.Address;
@@ -90,13 +91,31 @@ public class ProfessionalService {
     }
 
     public List<ProfessionalAvailabilityDTO> listAvailabilitiesByDayOfWeek(int dayOfWeek) {
-        return professionalAvailabilityRepository.findByAvailableTimeByDayOfWeek(dayOfWeek)
+        return professionalAvailabilityRepository.findByAvailableTimeByDayOfWeek(dayOfWeek % 7 + 1)
                 .stream().map(ProfessionalAvailabilityDTO::new).toList();
     }
 
     public List<ProfessionalAvailabilityDTO> listAvailabilitiesByHour(int hour) {
         return professionalAvailabilityRepository.findByAvailableByHour(hour)
                 .stream().map(ProfessionalAvailabilityDTO::new).toList();
+    }
+
+    public ProfessionalAvailability findAvailabilityByProfessionalAndAvailableTime(Long professionalId,
+                                                                                     LocalDateTime date) {
+        return professionalAvailabilityRepository.findByProfessionalIdAndAvailableTime(professionalId, date)
+                .orElseThrow(() -> new ControllerNotFoundException("Professional not available at this time"));
+    }
+
+    public ProfessionalAvailability findByProdecureId(Long id) {
+        return professionalAvailabilityRepository.findByProfessional_Procedures_id(id)
+                .orElseThrow(() -> new ControllerNotFoundException("Availability not found"));
+    }
+
+    @Transactional
+    public void updateAvailability(Long id, ProfessionalAvailabilityFormDTO formDTO) {
+        ProfessionalAvailability availability = professionalAvailabilityRepository.findById(id)
+                .orElseThrow(() -> new ControllerNotFoundException("Availability not found"));
+        availability.merge(formDTO);
     }
 
     /*
