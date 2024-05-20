@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ProfessionalAvailabilityRepository extends JpaRepository<ProfessionalAvailability, Long> {
 
@@ -31,4 +32,11 @@ public interface ProfessionalAvailabilityRepository extends JpaRepository<Profes
     List<ProfessionalAvailability> findByAvailableByHour(@Param("hour") Integer hour);
 
     List<ProfessionalAvailability> findAllByAvailableTimeBefore(LocalDateTime now);
+
+    Optional<ProfessionalAvailability> findByProfessionalIdAndAvailableTime(Long professionalId, LocalDateTime date);
+
+    @Query(value = "SELECT * FROM ProfessionalAvailability pa JOIN Procedure pc ON pa.professional_id = pc.professional_id WHERE pc.id = :id", nativeQuery = true)
+    Optional<ProfessionalAvailability> findByProcedureId(Long id);
+
+    Optional<ProfessionalAvailability> findByProfessional_Procedures_id(Long procedureId);
 }
