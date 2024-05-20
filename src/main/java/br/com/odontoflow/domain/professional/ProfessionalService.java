@@ -1,6 +1,5 @@
 package br.com.odontoflow.domain.professional;
 
-import br.com.odontoflow.application.ControllerNotFoundException;
 import br.com.odontoflow.application.professional.ProfessionalAvailabilityDTO;
 import br.com.odontoflow.application.professional.ProfessionalAvailabilityFormDTO;
 import br.com.odontoflow.application.professional.ProfessionalDTO;
@@ -11,6 +10,7 @@ import br.com.odontoflow.domain.procedure.Procedure;
 import br.com.odontoflow.infrastructure.procedure.ProcedureRepository;
 import br.com.odontoflow.infrastructure.professional.ProfessionalAvailabilityRepository;
 import br.com.odontoflow.infrastructure.professional.ProfessionalRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -52,7 +52,7 @@ public class ProfessionalService {
     }
 
     @Transactional
-    public void update(Long id, ProfessionalFormDTO professionalFormDTO) {
+    public ProfessionalDTO update(Long id, ProfessionalFormDTO professionalFormDTO) {
         List<Procedure> procedures = procedureRepository.findAllById(professionalFormDTO.proceduresIds());
         Professional professional = findProfessionalById(id);
         professionalAvailabilityRepository.deleteAll(professional.getAvailability());
@@ -60,20 +60,29 @@ public class ProfessionalService {
         professionalFormDTO.availabilities()
                 .forEach(availability -> professionalAvailabilityRepository.save(new ProfessionalAvailability(professional, availability)));
         procedures.forEach(procedure -> procedure.addProfessional(professional));
+        return new ProfessionalDTO(professional);
     }
 
     public Professional findByDocument(String document) {
         return professionalRepository.findByDocument(document)
-                .orElseThrow(() -> new ControllerNotFoundException("Professional not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Professional not found"));
     }
 
     public Professional findProfessionalById(Long id) {
         return professionalRepository.findById(id)
-                .orElseThrow(() -> new ControllerNotFoundException("Professional not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Professional not found"));
     }
 
     public List<ProfessionalDTO> listAllProfessionals() {
         return professionalRepository.findAll().stream().map(ProfessionalDTO::new).toList();
+    }
+
+    @Transactional
+    public ProfessionalAvailabilityDTO registerAvailability(ProfessionalAvailabilityFormDTO formDTO) {
+        Professional professional = findProfessionalById(formDTO.professionalId());
+        ProfessionalAvailability availability = new ProfessionalAvailability(professional, formDTO.availableTime());
+        professionalAvailabilityRepository.save(availability);
+        return new ProfessionalAvailabilityDTO(availability);
     }
 
     public List<ProfessionalAvailabilityDTO> listAllAvailabilities() {
@@ -103,21 +112,21 @@ public class ProfessionalService {
     public ProfessionalAvailability findAvailabilityByProfessionalAndAvailableTime(Long professionalId,
                                                                                      LocalDateTime date) {
         return professionalAvailabilityRepository.findByProfessionalIdAndAvailableTime(professionalId, date)
-                .orElseThrow(() -> new ControllerNotFoundException("Professional not available at this time"));
+                .orElseThrow(() -> new EntityNotFoundException("Professional not available at this time"));
     }
 
-    public ProfessionalAvailability findByProdecureId(Long id) {
-        return professionalAvailabilityRepository.findByProfessional_Procedures_id(id)
-                .orElseThrow(() -> new ControllerNotFoundException("Availability not found"));
+    public List<ProfessionalAvailabilityDTO> findByProcedureId(Long id) {
+        return professionalAvailabilityRepository.findAllByProfessional_Procedures_id(id)
+                .stream().map(ProfessionalAvailabilityDTO::new).toList();
     }
 
     @Transactional
-    public void updateAvailability(Long id, ProfessionalAvailabilityFormDTO formDTO) {
+    public ProfessionalAvailabilityDTO updateAvailability(Long id, ProfessionalAvailabilityFormDTO formDTO) {
         ProfessionalAvailability availability = professionalAvailabilityRepository.findById(id)
-                .orElseThrow(() -> new ControllerNotFoundException("Availability not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Availability not found"));
         availability.merge(formDTO);
+        return new ProfessionalAvailabilityDTO(availability);
     }
-
     /*
      * A expressão cron "0 0/30 9-20 * * MON-SAT" significa:
      * 0: No início do minuto (segundos).
@@ -128,6 +137,7 @@ public class ProfessionalService {
      * MON-SAT: De segunda a sábado.
      * O método deletePastAvailabilities será executado a cada 30 minutos de segunda a sábado, das 09:00 da manhã às 20:00 da noite.
      * */
+
     @Async
     @Transactional
     @Scheduled(cron = "0 0/30 9-20 * * MON-SAT")
@@ -136,5 +146,4 @@ public class ProfessionalService {
         List<ProfessionalAvailability> pastAvailabilities = professionalAvailabilityRepository.findAllByAvailableTimeBefore(now);
         professionalAvailabilityRepository.deleteAll(pastAvailabilities);
     }
-
 }

@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 @RestController
 @RequestMapping("/procedure")
 public class ProcedureController {
@@ -20,23 +19,22 @@ public class ProcedureController {
 
     @PostMapping("/create")
     public ResponseEntity<ProcedureDTO> procedureRegister(@RequestBody ProcedureFormDTO procedureFormDTO){
-        return new ResponseEntity<>(procedureService.createProcedure(procedureFormDTO), CREATED);
+        return ResponseEntity.status(CREATED).body(procedureService.createProcedure(procedureFormDTO));
     }
 
     @GetMapping("/list")
     public ResponseEntity<List<ProcedureDTO>> findAllProcedures(){
-        return new ResponseEntity<>(procedureService.findAll(), OK);
+        return ResponseEntity.ok(procedureService.findAll());
     }
 
     @GetMapping("/search/{name}")
     public ResponseEntity<ProcedureDTO> findProcedureForName(@PathVariable("name") String name){
-        return new ResponseEntity<>(new ProcedureDTO(procedureService.findForName(name)), OK);
+        return ResponseEntity.ok(procedureService.findByName(name));
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") Long id,
                                                         @RequestBody ProcedureFormDTO procedureFormDTO){
-        procedureService.update(id, procedureFormDTO);
-        return new ResponseEntity<>(OK);
+        return ResponseEntity.ok(procedureService.update(id, procedureFormDTO));
     }
 }
