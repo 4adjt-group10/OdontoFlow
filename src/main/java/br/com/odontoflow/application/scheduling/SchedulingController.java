@@ -1,6 +1,7 @@
 package br.com.odontoflow.application.scheduling;
 
 import br.com.odontoflow.domain.scheduling.SchedulingService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,25 +22,31 @@ public class SchedulingController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<SchedulingDTO> schedulerRegister(@RequestBody SchedulingFormDTO schedulingFormDTO){
+    public ResponseEntity<SchedulingDTO> schedulerRegister(@RequestBody @Valid SchedulingFormDTO schedulingFormDTO){
         return ResponseEntity.status(CREATED).body(schedulingService.register(schedulingFormDTO));
     }
 
     @GetMapping("/list/patient/{id}")
     public ResponseEntity<List<SchedulingDTO>> listByPatient(@PathVariable("id") Long id,
-                                             @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
+                                                             @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
         return ResponseEntity.ok(schedulingService.findAllByPatientId(id, date));
     }
 
     @GetMapping("/list/professional/{id}")
     public ResponseEntity<List<SchedulingDTO>> listByProfessional(@PathVariable("id") Long id,
-                                                  @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
+                                                                  @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
         return ResponseEntity.ok(schedulingService.findAllByProfessionalId(id, date));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<SchedulingDTO> updateSchedule(@PathVariable("id") Long id, @RequestBody SchedulingFormDTO formDTO) {
+    public ResponseEntity<SchedulingDTO> updateSchedule(@PathVariable("id") Long id,
+                                                        @RequestBody @Valid SchedulingFormDTO formDTO) {
         return ResponseEntity.ok(schedulingService.update(id, formDTO));
+    }
+
+    @PutMapping("/done/{id}")
+    public ResponseEntity<SchedulingDTO> done(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(schedulingService.done(id));
     }
 
 }

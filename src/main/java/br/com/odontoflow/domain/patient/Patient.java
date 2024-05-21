@@ -19,6 +19,7 @@ public class Patient {
     @OneToOne
     private Address address;
     private LocalDateTime createdAt;
+    private boolean blocked;
 
     public Patient(PatientFormDTO patientFormDTO) {
         this.name = patientFormDTO.name();
@@ -50,6 +51,18 @@ public class Patient {
 
     public String getDocument() {
         return document;
+    }
+
+    public boolean isBlocked() {
+        return blocked;
+    }
+
+    public void block() {
+        this.blocked = true;
+    }
+
+    public void unblock() {
+        this.blocked = false;
     }
 
     public Address getAddress() {
