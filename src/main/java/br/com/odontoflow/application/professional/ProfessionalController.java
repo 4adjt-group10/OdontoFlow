@@ -1,6 +1,7 @@
 package br.com.odontoflow.application.professional;
 
 import br.com.odontoflow.domain.professional.ProfessionalService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ public class ProfessionalController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ProfessionalDTO> professionalRegister(@RequestBody ProfessionalFormDTO professionalFormDTO){
+    public ResponseEntity<ProfessionalDTO> professionalRegister(@RequestBody @Valid ProfessionalFormDTO professionalFormDTO){
         return ResponseEntity.status(CREATED).body(professionalService.register(professionalFormDTO));
     }
 
@@ -31,12 +32,12 @@ public class ProfessionalController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProfessionalDTO> update(@PathVariable("id") Long id, @RequestBody ProfessionalFormDTO professionalFormDTO) {
+    public ResponseEntity<ProfessionalDTO> update(@PathVariable("id") Long id, @RequestBody @Valid ProfessionalFormDTO professionalFormDTO) {
         return ResponseEntity.ok(professionalService.update(id, professionalFormDTO));
     }
 
     @PostMapping("/availability/create")
-    public ResponseEntity<ProfessionalAvailabilityDTO> addRegister(@RequestBody ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO){
+    public ResponseEntity<ProfessionalAvailabilityDTO> addRegister(@RequestBody @Valid ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO){
         return ResponseEntity.status(CREATED).body(professionalService.registerAvailability(professionalAvailabilityFormDTO));
     }
 
@@ -72,7 +73,7 @@ public class ProfessionalController {
 
     @PutMapping("/availability/update/{id}")
     public ResponseEntity<ProfessionalAvailabilityDTO> updateAvailability(@PathVariable("id") Long id,
-                                                                       @RequestBody ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO) {
+                                                                          @RequestBody @Valid ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO) {
         return ResponseEntity.ok(professionalService.updateAvailability(id, professionalAvailabilityFormDTO));
     }
 
