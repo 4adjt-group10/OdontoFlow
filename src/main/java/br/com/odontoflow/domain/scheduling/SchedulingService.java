@@ -54,7 +54,7 @@ public class SchedulingService {
 
     @Transactional
     public SchedulingDTO register(SchedulingFormDTO formDTO) {
-        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument());
+        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.phone());
         if(patient.isBlocked()) {
             throw new PatientException("Patient is blocked");
         }
@@ -93,7 +93,7 @@ public class SchedulingService {
     @Transactional
     public SchedulingDTO update(Long id, SchedulingFormDTO formDTO){
         Scheduling scheduling = findById(id);
-        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument());
+        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.phone());
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
         scheduling.merge(new SchedulingUpdateDTO(patient, procedure, professional, formDTO.appointment(), formDTO.status()));
@@ -161,7 +161,7 @@ public class SchedulingService {
             //TODO: send notification to external service
             System.out.println("Canceled appointment: " + scheduling);
         });
-    }
+    }//TODO: Repensar lógica do job: Quem atrasa mais de 15 min mas chega a ir na clínica ou entra em contato para remarcar, pode remarcar
 
     /*
      * A expressão cron "0 0 9-20 * * MON-SAT" significa:
