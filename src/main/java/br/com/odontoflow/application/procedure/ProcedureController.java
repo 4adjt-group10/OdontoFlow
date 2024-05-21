@@ -1,6 +1,7 @@
 package br.com.odontoflow.application.procedure;
 
 import br.com.odontoflow.domain.procedure.ProcedureService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ public class ProcedureController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<ProcedureDTO> procedureRegister(@RequestBody ProcedureFormDTO procedureFormDTO){
+    public ResponseEntity<ProcedureDTO> procedureRegister(@RequestBody @Valid ProcedureFormDTO procedureFormDTO){
         return ResponseEntity.status(CREATED).body(procedureService.createProcedure(procedureFormDTO));
     }
 
@@ -34,7 +35,7 @@ public class ProcedureController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") Long id,
-                                                        @RequestBody ProcedureFormDTO procedureFormDTO){
+                                                        @RequestBody @Valid ProcedureFormDTO procedureFormDTO){
         return ResponseEntity.ok(procedureService.update(id, procedureFormDTO));
     }
 }

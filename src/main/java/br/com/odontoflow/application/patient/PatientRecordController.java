@@ -1,6 +1,7 @@
 package br.com.odontoflow.application.patient;
 
 import br.com.odontoflow.domain.patient.PatientRecordService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class PatientRecordController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<PatientRecordDTO> register(@RequestBody PatientRecordFormDTO formDTO) {
+    public ResponseEntity<PatientRecordDTO> register(@RequestBody @Valid PatientRecordFormDTO formDTO) {
         return ResponseEntity.status(CREATED).body(patientRecordService.register(formDTO));
     }
 
@@ -39,7 +40,8 @@ public class PatientRecordController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<PatientRecordDTO> updatePatientRecord(@PathVariable("id") Long id, @RequestBody PatientRecordFormDTO formDTO) {
+    public ResponseEntity<PatientRecordDTO> updatePatientRecord(@PathVariable("id") Long id,
+                                                                @RequestBody @Valid PatientRecordFormDTO formDTO) {
         return ResponseEntity.ok(patientRecordService.update(id, formDTO));
     }
 }
