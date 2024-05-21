@@ -1,5 +1,6 @@
 package br.com.odontoflow.domain.scheduling;
 
+import br.com.odontoflow.application.RescheduleException;
 import br.com.odontoflow.application.scheduling.SchedulingUpdateDTO;
 import br.com.odontoflow.domain.patient.Patient;
 import br.com.odontoflow.domain.procedure.Procedure;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static br.com.odontoflow.domain.scheduling.SchedulingStatus.*;
+import static java.time.LocalDateTime.now;
 
 @Entity
 @Table(name = "Scheduling")
@@ -87,6 +89,10 @@ public class Scheduling {
         return this.patient.getId();
     }
 
+    public String getAppointmentFormated() {
+        return appointment.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+    }
+
     public void cancel() {
         this.status = CANCELED;
     }
@@ -100,20 +106,19 @@ public class Scheduling {
     }
 
     public void reschedule(LocalDateTime newAppointment) {
-        this.appointment = newAppointment;
-        this.status = RESCHEDULED;
+        if (this.appointment.isAfter(now().plusHours(6))) {
+            this.appointment = newAppointment;
+        } else {
+            throw new RescheduleException("It is not possible to reschedule an appointment with less than 6 hours in advance.");
+        }
     }
 
-    public void merge (SchedulingUpdateDTO updateDTO){
-        this.appointment = updateDTO.appointment();
+    public void merge(SchedulingUpdateDTO updateDTO) {
+        reschedule(updateDTO.appointment());
         this.patient = updateDTO.patient();
         this.procedure = updateDTO.procedure();
         this.professional = updateDTO.professional();
         this.status = updateDTO.status();
-    }
-    public String getAppointmentFormated() {
-
-        return appointment.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 
 }
