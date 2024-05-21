@@ -86,7 +86,6 @@ public class SchedulingService {
         return schedulingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Schedule not found"));
     }
 
-    //TODO: melhorar lógica para reagendamento
     @Transactional
     public SchedulingDTO update(Long id, SchedulingFormDTO formDTO){
         Scheduling scheduling = findById(id);
@@ -170,6 +169,5 @@ public class SchedulingService {
         });
     }
 
-    //TODO: Implementar uma agenda de horários disponíveis para cada profissional
     //TODO: Implementar lógica de reagendamento de consultas (permitir com no mínimo 6hrs de antecedência)
 }

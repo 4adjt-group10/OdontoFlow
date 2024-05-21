@@ -9,10 +9,11 @@ import java.time.LocalDateTime;
 
 @Entity
 public class PatientRecord {
-    //TODO: Mudar ids para UUID?
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(columnDefinition = "TEXT", length = 1000)
     private String description;
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime date;
@@ -64,6 +65,6 @@ public class PatientRecord {
     }
 
     public void isCanceled() {
-        this.description = description.concat("  OBS: Agendamento cancelado por atraso do paciente.");
+        this.description = "OBS: Agendamento cancelado por atraso do paciente.";
     }
 }

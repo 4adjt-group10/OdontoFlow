@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import java.time.Instant;
 
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @ControllerAdvice
@@ -23,5 +24,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getRequestURI()
         );
         return ResponseEntity.status(NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(RescheduleException.class)
+    public ResponseEntity<StandardError> handleRescheduleException(RescheduleException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(Instant.now(),
+                BAD_REQUEST.value(),
+                "Reschedule error",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(BAD_REQUEST).body(error);
     }
 }
