@@ -3,6 +3,7 @@ package br.com.odontoflow.domain.patient;
 import br.com.odontoflow.application.patient.PatientFormDTO;
 import br.com.odontoflow.domain.address.Address;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,10 @@ public class Patient {
     private String document;
     @OneToOne
     private Address address;
+    @Column(name = "phone", length = 14)
+    private String phone;
+    @Email
+    private String email;
     private LocalDateTime createdAt;
     private boolean blocked;
 
@@ -25,11 +30,14 @@ public class Patient {
         this.name = patientFormDTO.name();
         this.document = patientFormDTO.document();
         this.createdAt = LocalDateTime.now();
+        this.phone = patientFormDTO.phone();
+        this.email = patientFormDTO.email();
     }
 
-    public Patient(String name, String document) {
+    public Patient(String name, String document, String phone) {
         this.name = name;
         this.document = document;
+        this.phone = phone;
     }
 
     @Deprecated(since = "Only for use of frameworks")
@@ -51,6 +59,14 @@ public class Patient {
 
     public String getDocument() {
         return document;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public @Email String getEmail() {
+        return email;
     }
 
     public boolean isBlocked() {

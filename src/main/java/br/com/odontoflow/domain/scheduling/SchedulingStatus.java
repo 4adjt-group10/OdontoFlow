@@ -6,6 +6,7 @@ public enum SchedulingStatus {
     RESCHEDULED("Reagendado"),
     CANCELED("Cancelado"),
     DONE("Realizado"),
+    ATTENDING("Atendendo"),
     LATE("Atrasado");
 
     private final String description;

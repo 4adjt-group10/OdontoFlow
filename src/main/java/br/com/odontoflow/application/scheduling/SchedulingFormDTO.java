@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 public record SchedulingFormDTO(
         @NotBlank String patientName,
         @NotBlank String patientDocument,
+        @NotBlank String phone,
         @NotNull Long procedureId,
         @NotNull Long professionalId,
         @NotNull @FutureOrPresent LocalDateTime appointment,

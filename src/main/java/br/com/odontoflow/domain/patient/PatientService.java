@@ -58,9 +58,9 @@ public class PatientService {
         return patientRepository.findAll().stream().map(PatientDTO::new).toList();
     }
 
-    public Patient findByDocumentOrCreate(String patientName, String patientDocument) {
+    public Patient findByDocumentOrCreate(String patientName, String patientDocument, String phone) {
         return patientRepository.findByDocument(patientDocument)
-                .orElseGet(() -> patientRepository.save(new Patient(patientName, patientDocument)));
+                .orElseGet(() -> patientRepository.save(new Patient(patientName, patientDocument, phone)));
     }
 
     //    @Scheduled(cron = "0 0 0 * * *") // Executa uma vez por dia à meia-noite
