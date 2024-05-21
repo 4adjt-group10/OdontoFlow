@@ -2,6 +2,7 @@ package br.com.odontoflow.application.scheduling;
 
 import br.com.odontoflow.domain.scheduling.SchedulingStatus;
 import jakarta.annotation.Nullable;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,7 +13,7 @@ public record SchedulingFormDTO(
         @NotBlank String patientDocument,
         @NotNull Long procedureId,
         @NotNull Long professionalId,
-        @NotNull LocalDateTime appointment,
+        @NotNull @FutureOrPresent LocalDateTime appointment,
         @NotNull SchedulingStatus status,
         @Nullable String observation
 ) {

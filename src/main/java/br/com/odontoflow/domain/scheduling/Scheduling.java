@@ -93,6 +93,10 @@ public class Scheduling {
         return appointment.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
 
+    public boolean hasStatus(SchedulingStatus status) {
+        return this.status.equals(status);
+    }
+
     public void cancel() {
         this.status = CANCELED;
     }
@@ -105,7 +109,7 @@ public class Scheduling {
         this.status = LATE;
     }
 
-    public void reschedule(LocalDateTime newAppointment) {
+    private void reschedule(LocalDateTime newAppointment) {
         if (this.appointment.isAfter(now().plusHours(6))) {
             this.appointment = newAppointment;
         } else {

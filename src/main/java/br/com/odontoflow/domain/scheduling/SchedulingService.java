@@ -1,5 +1,6 @@
 package br.com.odontoflow.domain.scheduling;
 
+import br.com.odontoflow.application.PatientException;
 import br.com.odontoflow.application.patient.PatientRecordFormDTO;
 import br.com.odontoflow.application.scheduling.SchedulingDTO;
 import br.com.odontoflow.application.scheduling.SchedulingFormDTO;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.odontoflow.domain.scheduling.SchedulingStatus.LATE;
+import static br.com.odontoflow.domain.scheduling.SchedulingStatus.*;
 
 @Service
 public class SchedulingService {
@@ -54,6 +55,9 @@ public class SchedulingService {
     @Transactional
     public SchedulingDTO register(SchedulingFormDTO formDTO) {
         Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument());
+        if(patient.isBlocked()) {
+            throw new PatientException("Patient is blocked");
+        }
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
         ProfessionalAvailability availability = professionalService
@@ -71,13 +75,13 @@ public class SchedulingService {
     }
 
     public List<SchedulingDTO> findAllByPatientId(Long id, Optional<LocalDate> date) {
-        return date.map(d -> schedulingRepository.findAllByPatient_IdAndDate(id, d))
+        return date.map(d -> schedulingRepository.findAllByPatientIdAndDate(id, d))
                 .orElseGet(() -> schedulingRepository.findAllByPatient_Id(id))
                 .stream().map(SchedulingDTO::new).toList();
     }
 
     public List<SchedulingDTO> findAllByProfessionalId(Long id, Optional<LocalDate> date) {
-        return date.map(d -> schedulingRepository.findAllByProfessional_IdAndDate(id, d))
+        return date.map(d -> schedulingRepository.findAllByProfessionalIdAndDate(id, d))
                 .orElseGet(() -> schedulingRepository.findAllByProfessional_Id(id))
                 .stream().map(SchedulingDTO::new).toList();
     }
@@ -93,6 +97,13 @@ public class SchedulingService {
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
         scheduling.merge(new SchedulingUpdateDTO(patient, procedure, professional, formDTO.appointment(), formDTO.status()));
+        return new SchedulingDTO(scheduling);
+    }
+
+    public SchedulingDTO done(Long id) {
+        Scheduling scheduling = findById(id);
+        scheduling.done();
+        schedulingRepository.save(scheduling);
         return new SchedulingDTO(scheduling);
     }
 
@@ -112,8 +123,12 @@ public class SchedulingService {
     @Scheduled(cron = "*/5 * * * * *") //Apenas para testes locais, roda a cada 5s
     public void checkLateAppointments() {
         LocalDateTime now = LocalDateTime.now();
-        List<Scheduling> lateSchedules = schedulingRepository.findAllByAppointmentsToDay(now.toLocalDate())
-                .stream().filter(scheduling -> scheduling.getAppointment().isBefore(now)).toList();
+        List<Scheduling> lateSchedules = schedulingRepository
+                .findAllByAppointmentsToDay(now.toLocalDate())
+                .stream()
+                .filter(scheduling -> scheduling.getAppointment().isBefore(now)
+                        && (scheduling.hasStatus(SCHEDULED) || scheduling.hasStatus(RESCHEDULED)))
+                .toList();
         lateSchedules.forEach(scheduling -> {
             scheduling.late();
             patientRecordService.findLastByPatientId(scheduling.getPatientId()).isLate();
@@ -140,6 +155,8 @@ public class SchedulingService {
         List<Scheduling> lateSchedules = schedulingRepository.findAllByStatus(LATE);
         lateSchedules.forEach(scheduling -> {
             scheduling.cancel();
+            scheduling.getPatient().block();
+            schedulingRepository.save(scheduling);
             patientRecordService.findLastByPatientId(scheduling.getPatient().getId()).isCanceled();
             //TODO: send notification to external service
             System.out.println("Canceled appointment: " + scheduling);
@@ -156,18 +173,19 @@ public class SchedulingService {
      * MON-SAT: De segunda a sábado.
      * O método será executado uma vez por dia, de segunda a sábado, às 20:00 (8 da noite).
      * */
+    //    @Scheduled(cron = "0 0 20 * * MON-SAT") // Executa uma vez por dia, de segunda a sábado às 20:00
     @Async
     @Transactional
-    @Scheduled(cron = "0 0 20 * * MON-SAT") // Executa uma vez por dia, de segunda a sábado, das 09:00 às 20:00
+    @Scheduled(cron = "*/30 * * * * *") //Apenas para testes locais, roda a cada 30s
     public void checkAppointmentsInNext24Hours() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime next24Hours = now.plusHours(24);
-        List<Scheduling> upcomingSchedules = schedulingRepository.findAllByAppointmentBetween(now, next24Hours);
+        List<Scheduling> upcomingSchedules = schedulingRepository
+                .findAllByAppointmentBetweenAndStatusIn(now, next24Hours, List.of(SCHEDULED, RESCHEDULED));
         upcomingSchedules.forEach(scheduling -> {
             // TODO: send notification to external service
             System.out.println("Upcoming appointment in next 24 hours: " + scheduling);
         });
     }
 
-    //TODO: Implementar lógica de reagendamento de consultas (permitir com no mínimo 6hrs de antecedência)
 }
