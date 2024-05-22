@@ -3,9 +3,11 @@ package br.com.odontoflow.application.scheduling;
 import br.com.odontoflow.domain.scheduling.Scheduling;
 import br.com.odontoflow.domain.scheduling.SchedulingStatus;
 
+import java.util.UUID;
+
 
 public record SchedulingDTO(
-        Long id,
+        UUID id,
         String patientName,
         String procedureName,
         String professionalName,

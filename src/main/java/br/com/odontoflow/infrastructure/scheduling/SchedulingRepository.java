@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
+public interface SchedulingRepository extends JpaRepository<Scheduling, UUID> {
 
     List<Scheduling> findAllByPatient_Id(UUID id);
 

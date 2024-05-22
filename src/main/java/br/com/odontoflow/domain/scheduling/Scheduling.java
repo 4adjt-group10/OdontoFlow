@@ -18,8 +18,7 @@ import static java.time.LocalDateTime.now;
 @Table(name = "Scheduling")
 public class Scheduling {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
@@ -43,6 +42,7 @@ public class Scheduling {
                       Professional professional,
                       LocalDateTime appointment,
                       SchedulingStatus status) {
+        this.id = UUID.randomUUID();
         this.patient = patient;
         this.procedure = procedure;
         this.professional = professional;
@@ -50,7 +50,7 @@ public class Scheduling {
         this.status = status;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

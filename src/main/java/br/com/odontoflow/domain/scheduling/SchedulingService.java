@@ -87,12 +87,12 @@ public class SchedulingService {
                 .stream().map(SchedulingDTO::new).toList();
     }
 
-    public Scheduling findById(Long id) {
+    public Scheduling findById(UUID id) {
         return schedulingRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Schedule not found"));
     }
 
     @Transactional
-    public SchedulingDTO update(Long id, SchedulingFormDTO formDTO){
+    public SchedulingDTO update(UUID id, SchedulingFormDTO formDTO){
         Scheduling scheduling = findById(id);
         Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.phone());
         Procedure procedure = procedureService.findById(formDTO.procedureId());
@@ -101,7 +101,7 @@ public class SchedulingService {
         return new SchedulingDTO(scheduling);
     }
 
-    public SchedulingDTO done(Long id) {
+    public SchedulingDTO done(UUID id) {
         Scheduling scheduling = findById(id);
         scheduling.done();
         schedulingRepository.save(scheduling);
