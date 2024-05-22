@@ -26,8 +26,8 @@ public class PatientRecordController {
     }
 
     @GetMapping("/search/{id}")
-    public ResponseEntity<PatientRecordDTO> searchById(@PathVariable("id") Long patientId) {
-        return ResponseEntity.ok(patientRecordService.findById(patientId));
+    public ResponseEntity<PatientRecordDTO> searchById(@PathVariable("id") UUID id) {
+        return ResponseEntity.ok(patientRecordService.findById(id));
     }
 
     @GetMapping("/list/patient/{id}")
@@ -41,7 +41,7 @@ public class PatientRecordController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<PatientRecordDTO> updatePatientRecord(@PathVariable("id") Long id,
+    public ResponseEntity<PatientRecordDTO> updatePatientRecord(@PathVariable("id") UUID id,
                                                                 @RequestBody @Valid PatientRecordFormDTO formDTO) {
         return ResponseEntity.ok(patientRecordService.update(id, formDTO));
     }

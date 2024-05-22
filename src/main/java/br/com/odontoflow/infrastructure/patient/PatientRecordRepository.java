@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PatientRecordRepository extends JpaRepository<PatientRecord, Long> {
+public interface PatientRecordRepository extends JpaRepository<PatientRecord, UUID> {
 
     List<PatientRecord> findByProfessional_Id(Long id);
 

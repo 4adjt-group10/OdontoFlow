@@ -4,9 +4,10 @@ import br.com.odontoflow.domain.patient.PatientRecord;
 import br.com.odontoflow.application.professional.ProfessionalDTO;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public record PatientRecordDTO(
-        Long id,
+        UUID id,
         String description,
         LocalDateTime date,
         PatientDTO patient,

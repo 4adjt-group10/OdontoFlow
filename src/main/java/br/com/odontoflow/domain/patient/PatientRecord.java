@@ -6,13 +6,13 @@ import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 public class PatientRecord {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(columnDefinition = "TEXT", length = 1000)
     private String description;
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
@@ -29,13 +29,14 @@ public class PatientRecord {
     }
 
     public PatientRecord(String description, LocalDateTime date, Patient patient, Professional professional) {
+        this.id = UUID.randomUUID();
         this.description = description;
         this.date = date;
         this.patient = patient;
         this.professional = professional;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

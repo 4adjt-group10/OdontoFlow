@@ -36,7 +36,7 @@ public class PatientRecordService {
     }
 
     @Transactional
-    public PatientRecordDTO update(Long id, PatientRecordFormDTO formDTO){
+    public PatientRecordDTO update(UUID id, PatientRecordFormDTO formDTO){
         PatientRecord patientRecord = patientRecordRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
         patientRecord.merge(formDTO);
@@ -51,7 +51,7 @@ public class PatientRecordService {
         return patientRecordRepository.findByProfessional_Id(professionalId).stream().map(PatientRecordDTO::new).toList();
     }
 
-    public PatientRecordDTO findById(Long id){
+    public PatientRecordDTO findById(UUID id){
         PatientRecord patientRecord = patientRecordRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
         return new PatientRecordDTO(patientRecord);
