@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -25,7 +26,7 @@ public class PatientController {
     }
 
     @GetMapping("/search/{id}")
-    public ResponseEntity<PatientDTO> search(@PathVariable("id") Long patientId) {
+    public ResponseEntity<PatientDTO> search(@PathVariable("id") UUID patientId) {
         return ResponseEntity.ok(new PatientDTO(patientService.findPatientById(patientId)));
     }
 
@@ -35,7 +36,7 @@ public class PatientController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<PatientDTO> update(@PathVariable("id") Long id, @RequestBody @Valid PatientFormDTO patientFormDTO) {
+    public ResponseEntity<PatientDTO> update(@PathVariable("id") UUID id, @RequestBody @Valid PatientFormDTO patientFormDTO) {
         return ResponseEntity.ok(patientService.update(id, patientFormDTO));
     }
 }

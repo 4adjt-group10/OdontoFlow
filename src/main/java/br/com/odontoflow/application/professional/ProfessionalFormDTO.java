@@ -8,13 +8,14 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 public record ProfessionalFormDTO(
         @NotBlank String name,
         @NotBlank String document,
         @NotNull AddressFormDTO address,
         @NotNull ProfessionalType type,
-        @Nullable List<Long> proceduresIds,
+        @Nullable List<UUID> proceduresIds,
         @Nullable List<LocalDateTime> availabilities
 ) {
 

@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PatientRecordService {
@@ -35,28 +36,28 @@ public class PatientRecordService {
     }
 
     @Transactional
-    public PatientRecordDTO update(Long id, PatientRecordFormDTO formDTO){
+    public PatientRecordDTO update(UUID id, PatientRecordFormDTO formDTO){
         PatientRecord patientRecord = patientRecordRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
         patientRecord.merge(formDTO);
         return new PatientRecordDTO(patientRecord);
     }
 
-    public List<PatientRecordDTO> findByPatientId(Long patientId){
+    public List<PatientRecordDTO> findByPatientId(UUID patientId){
         return patientRecordRepository.findByPatient_Id(patientId).stream().map(PatientRecordDTO::new).toList();
     }
 
-    public List<PatientRecordDTO> findByProfessionalId(Long professionalId){
+    public List<PatientRecordDTO> findByProfessionalId(UUID professionalId){
         return patientRecordRepository.findByProfessional_Id(professionalId).stream().map(PatientRecordDTO::new).toList();
     }
 
-    public PatientRecordDTO findById(Long id){
+    public PatientRecordDTO findById(UUID id){
         PatientRecord patientRecord = patientRecordRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
         return new PatientRecordDTO(patientRecord);
     }
 
-    public PatientRecord findLastByPatientId(Long patientId){
+    public PatientRecord findLastByPatientId(UUID patientId){
         return patientRecordRepository.findFirstByPatient_IdOrderByDateDesc(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
     }

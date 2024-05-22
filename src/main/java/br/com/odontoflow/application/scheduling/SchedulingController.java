@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -27,25 +28,25 @@ public class SchedulingController {
     }
 
     @GetMapping("/list/patient/{id}")
-    public ResponseEntity<List<SchedulingDTO>> listByPatient(@PathVariable("id") Long id,
+    public ResponseEntity<List<SchedulingDTO>> listByPatient(@PathVariable("id") UUID id,
                                                              @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
         return ResponseEntity.ok(schedulingService.findAllByPatientId(id, date));
     }
 
     @GetMapping("/list/professional/{id}")
-    public ResponseEntity<List<SchedulingDTO>> listByProfessional(@PathVariable("id") Long id,
+    public ResponseEntity<List<SchedulingDTO>> listByProfessional(@PathVariable("id") UUID id,
                                                                   @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
         return ResponseEntity.ok(schedulingService.findAllByProfessionalId(id, date));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<SchedulingDTO> updateSchedule(@PathVariable("id") Long id,
+    public ResponseEntity<SchedulingDTO> updateSchedule(@PathVariable("id") UUID id,
                                                         @RequestBody @Valid SchedulingFormDTO formDTO) {
         return ResponseEntity.ok(schedulingService.update(id, formDTO));
     }
 
     @PutMapping("/done/{id}")
-    public ResponseEntity<SchedulingDTO> done(@PathVariable("id") Long id) {
+    public ResponseEntity<SchedulingDTO> done(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(schedulingService.done(id));
     }
 

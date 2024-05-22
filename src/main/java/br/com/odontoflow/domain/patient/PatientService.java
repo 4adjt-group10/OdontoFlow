@@ -5,6 +5,7 @@ import br.com.odontoflow.application.patient.PatientFormDTO;
 import br.com.odontoflow.domain.address.Address;
 import br.com.odontoflow.domain.address.AddressService;
 import br.com.odontoflow.domain.scheduling.Scheduling;
+import br.com.odontoflow.infrastructure.patient.PatientRecordRepository;
 import br.com.odontoflow.infrastructure.patient.PatientRepository;
 import br.com.odontoflow.infrastructure.scheduling.SchedulingRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static br.com.odontoflow.domain.scheduling.SchedulingStatus.CANCELED;
 
@@ -37,20 +39,20 @@ public class PatientService {
     @Transactional
     public PatientDTO register(PatientFormDTO patientFormDTO) {
         Patient patient = new Patient(patientFormDTO);
-        patientRepository.save(patient);
         Address address = addressService.register(patientFormDTO.address());
         patient.setAddress(address);
+        patientRepository.save(patient);
         return new PatientDTO(patient);
     }
 
     @Transactional
-    public PatientDTO update(Long id, PatientFormDTO patientFormDTO) {
+    public PatientDTO update(UUID id, PatientFormDTO patientFormDTO) {
         Patient patient = findPatientById(id);
         patient.merge(patientFormDTO);
         return new PatientDTO(patient);
     }
 
-    public Patient findPatientById(Long patientId) {
+    public Patient findPatientById(UUID patientId) {
         return patientRepository.findById(patientId).orElseThrow(() -> new EntityNotFoundException("Patient not found"));
     }
 

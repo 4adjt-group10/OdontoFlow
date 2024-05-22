@@ -4,14 +4,14 @@ import br.com.odontoflow.application.professional.ProfessionalAvailabilityFormDT
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "ProfessionalAvailability")
 public class ProfessionalAvailability {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
 
     @ManyToOne
     @JoinColumn(name = "professional_id")
@@ -20,6 +20,7 @@ public class ProfessionalAvailability {
     private LocalDateTime availableTime;
 
     public ProfessionalAvailability(Professional professional, LocalDateTime availableTime) {
+        this.id = UUID.randomUUID();
         this.professional = professional;
         this.availableTime = availableTime;
     }
@@ -28,7 +29,7 @@ public class ProfessionalAvailability {
     public ProfessionalAvailability() {
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

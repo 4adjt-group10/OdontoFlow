@@ -7,14 +7,14 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Procedure")
 public class Procedure {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(unique = true)
     private String name;
     private BigDecimal price;
@@ -22,6 +22,7 @@ public class Procedure {
     private List<Professional> professionals;
 
     public Procedure(ProcedureFormDTO procedureFormDTO, List<Professional> professionals) {
+        this.id = UUID.randomUUID();
         this.name = procedureFormDTO.name();
         this.price = procedureFormDTO.price();
         this.professionals = professionals;
@@ -32,7 +33,7 @@ public class Procedure {
 
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
