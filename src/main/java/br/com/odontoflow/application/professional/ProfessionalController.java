@@ -5,8 +5,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,47 +33,6 @@ public class ProfessionalController {
     @PutMapping("/update/{id}")
     public ResponseEntity<ProfessionalDTO> update(@PathVariable("id") UUID id, @RequestBody @Valid ProfessionalFormDTO professionalFormDTO) {
         return ResponseEntity.ok(professionalService.update(id, professionalFormDTO));
-    }
-
-    @PostMapping("/availability/create")
-    public ResponseEntity<ProfessionalAvailabilityDTO> addRegister(@RequestBody @Valid ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO){
-        return ResponseEntity.status(CREATED).body(professionalService.registerAvailability(professionalAvailabilityFormDTO));
-    }
-
-    @GetMapping("/availability/list-all")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAllAvailabilities() {
-        return ResponseEntity.ok(professionalService.listAllAvailabilities());
-    }
-
-    @GetMapping("/availability/{professionalId}")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilities(@PathVariable("professionalId") UUID id) {
-        return ResponseEntity.ok(professionalService.listAvailabilitiesByProfessionalId(id));
-    }
-
-    @GetMapping("/availability/date/{date}")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByDate(@PathVariable("date") LocalDate date) {
-        return ResponseEntity.ok(professionalService.listAvailabilitiesByDate(date));
-    }
-
-    @GetMapping("/availability/day/{dayOfWeek}")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByDayOfWeek(@PathVariable("dayOfWeek") DayOfWeek dayOfWeek) {
-        return ResponseEntity.ok(professionalService.listAvailabilitiesByDayOfWeek(dayOfWeek.getValue()));
-    }
-
-    @GetMapping("/availability/hour/{hour}")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByHour(@PathVariable("hour") Integer hour) {
-        return ResponseEntity.ok(professionalService.listAvailabilitiesByHour(hour));
-    }
-
-    @GetMapping("/availability/procedure/{id}")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByProcedure(@PathVariable("id") UUID id) {
-        return ResponseEntity.ok(professionalService.findByProcedureId(id));
-    }
-
-    @PutMapping("/availability/update/{id}")
-    public ResponseEntity<ProfessionalAvailabilityDTO> updateAvailability(@PathVariable("id") UUID id,
-                                                                          @RequestBody @Valid ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO) {
-        return ResponseEntity.ok(professionalService.updateAvailability(id, professionalAvailabilityFormDTO));
     }
 
 }

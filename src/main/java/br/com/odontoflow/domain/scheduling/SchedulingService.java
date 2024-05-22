@@ -12,8 +12,8 @@ import br.com.odontoflow.domain.procedure.Procedure;
 import br.com.odontoflow.domain.procedure.ProcedureService;
 import br.com.odontoflow.domain.professional.Professional;
 import br.com.odontoflow.domain.professional.ProfessionalAvailability;
+import br.com.odontoflow.domain.professional.ProfessionalAvailabilityService;
 import br.com.odontoflow.domain.professional.ProfessionalService;
-import br.com.odontoflow.infrastructure.professional.ProfessionalAvailabilityRepository;
 import br.com.odontoflow.infrastructure.scheduling.SchedulingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -37,20 +37,20 @@ public class SchedulingService {
     private final SchedulingRepository schedulingRepository;
     private final ProfessionalService professionalService;
     private final PatientRecordService patientRecordService;
-    private final ProfessionalAvailabilityRepository professionalAvailabilityRepository;
+    private final ProfessionalAvailabilityService professionalAvailabilityService;
 
     public SchedulingService(SchedulingRepository schedulingRepository,
                              PatientService patientService,
                              ProfessionalService professionalService,
                              ProcedureService procedureService,
                              PatientRecordService patientRecordService,
-                             ProfessionalAvailabilityRepository availabilityRepository) {
+                             ProfessionalAvailabilityService professionalAvailabilityService) {
         this.schedulingRepository = schedulingRepository;
         this.patientService = patientService;
         this.professionalService = professionalService;
         this.procedureService = procedureService;
         this.patientRecordService = patientRecordService;
-        this.professionalAvailabilityRepository = availabilityRepository;
+        this.professionalAvailabilityService = professionalAvailabilityService;
     }
 
     @Transactional
@@ -61,11 +61,11 @@ public class SchedulingService {
         }
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
-        ProfessionalAvailability availability = professionalService
+        ProfessionalAvailability availability = professionalAvailabilityService
                 .findAvailabilityByProfessionalAndAvailableTime(professional.getId(), formDTO.appointment());
         Scheduling scheduling = new Scheduling(patient, procedure, professional, formDTO.appointment(), formDTO.status());
         schedulingRepository.save(scheduling);
-        professionalAvailabilityRepository.delete(availability);
+        professionalAvailabilityService.deleteAvailability(availability);
         patientRecordService.register(new PatientRecordFormDTO(formDTO.observation(),
                 formDTO.appointment(),
                 patient.getId(),
