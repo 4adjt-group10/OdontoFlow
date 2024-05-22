@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -67,7 +68,7 @@ public class ProfessionalController {
     }
 
     @GetMapping("/availability/procedure/{id}")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByProcedure(@PathVariable("id") Long id) {
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilitiesByProcedure(@PathVariable("id") UUID id) {
         return ResponseEntity.ok(professionalService.findByProcedureId(id));
     }
 

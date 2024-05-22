@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 @RestController
@@ -34,7 +35,7 @@ public class ProcedureController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") Long id,
+    public ResponseEntity<ProcedureDTO> updateProcedure(@PathVariable("id") UUID id,
                                                         @RequestBody @Valid ProcedureFormDTO procedureFormDTO){
         return ResponseEntity.ok(procedureService.update(id, procedureFormDTO));
     }

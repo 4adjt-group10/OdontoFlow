@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProcedureService {
@@ -26,17 +27,20 @@ public class ProcedureService {
     public ProcedureDTO createProcedure(ProcedureFormDTO procedureFormDTO) {
         List<Professional> professionals = professionalRepository.findAllById(procedureFormDTO.professionalsIds());
         Procedure procedure = new Procedure(procedureFormDTO, professionals);
-        procedureRepository.save(procedure);
         professionals.forEach(professional -> professional.addProcedure(procedure));
+        procedureRepository.save(procedure);
+        professionalRepository.saveAll(professionals);
         return new ProcedureDTO(procedure);
     }
 
     @Transactional
-    public ProcedureDTO update(Long id, ProcedureFormDTO procedureFormDTO) {
+    public ProcedureDTO update(UUID id, ProcedureFormDTO procedureFormDTO) {
         List<Professional> professionals = professionalRepository.findAllById(procedureFormDTO.professionalsIds());
         Procedure procedure = findById(id);
         procedure.merge(procedureFormDTO, professionals);
         professionals.forEach(professional -> professional.addProcedure(procedure));
+        procedureRepository.save(procedure);
+        professionalRepository.saveAll(professionals);
         return new ProcedureDTO(procedure);
     }
 
@@ -50,7 +54,7 @@ public class ProcedureService {
                 .orElseThrow(() -> new EntityNotFoundException("Procedure not found")));
     }
 
-    public Procedure findById(Long id) {
+    public Procedure findById(UUID id) {
         return procedureRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Procedure not found"));
     }
 }

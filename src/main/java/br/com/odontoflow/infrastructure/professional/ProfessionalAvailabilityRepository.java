@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface ProfessionalAvailabilityRepository extends JpaRepository<ProfessionalAvailability, Long> {
 
@@ -35,5 +36,5 @@ public interface ProfessionalAvailabilityRepository extends JpaRepository<Profes
 
     Optional<ProfessionalAvailability> findByProfessionalIdAndAvailableTime(Long professionalId, LocalDateTime date);
 
-    List<ProfessionalAvailability> findAllByProfessional_Procedures_id(Long procedureId);
+    List<ProfessionalAvailability> findAllByProfessional_Procedures_id(UUID procedureId);
 }

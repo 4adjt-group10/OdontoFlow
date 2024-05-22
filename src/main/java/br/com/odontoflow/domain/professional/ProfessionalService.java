@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ProfessionalService {
@@ -42,12 +43,12 @@ public class ProfessionalService {
     public ProfessionalDTO register(ProfessionalFormDTO professionalFormDto) {
         List<Procedure> procedures = procedureRepository.findAllById(professionalFormDto.proceduresIds());
         Professional professional = new Professional(professionalFormDto);
-        professionalRepository.save(professional);
         professionalFormDto.availabilities()
                 .forEach(availability -> professionalAvailabilityRepository.save(new ProfessionalAvailability(professional, availability)));
         procedures.forEach(procedure -> procedure.addProfessional(professional));
         Address address = addressService.register(professionalFormDto.address());
         professional.setAddress(address);
+        professionalRepository.save(professional);
         return new ProfessionalDTO(professional);
     }
 
@@ -60,6 +61,7 @@ public class ProfessionalService {
         professionalFormDTO.availabilities()
                 .forEach(availability -> professionalAvailabilityRepository.save(new ProfessionalAvailability(professional, availability)));
         procedures.forEach(procedure -> procedure.addProfessional(professional));
+        professionalRepository.save(professional);
         return new ProfessionalDTO(professional);
     }
 
@@ -115,7 +117,7 @@ public class ProfessionalService {
                 .orElseThrow(() -> new EntityNotFoundException("Professional not available at this time"));
     }
 
-    public List<ProfessionalAvailabilityDTO> findByProcedureId(Long id) {
+    public List<ProfessionalAvailabilityDTO> findByProcedureId(UUID id) {
         return professionalAvailabilityRepository.findAllByProfessional_Procedures_id(id)
                 .stream().map(ProfessionalAvailabilityDTO::new).toList();
     }
