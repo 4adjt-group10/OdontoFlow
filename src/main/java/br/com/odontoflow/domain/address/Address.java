@@ -3,13 +3,14 @@ package br.com.odontoflow.domain.address;
 import br.com.odontoflow.application.address.AddressFormDTO;
 import jakarta.persistence.*;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "Address")
 public class Address {
-//TODO: Tornar embeddable para paciente e profissional (deixará de ser uma entidade)
+//TODO: Tornar embeddable para paciente e profissional? (deixará de ser uma entidade)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     private String street;
     private int number;
     private String neighborhood;
@@ -21,6 +22,7 @@ public class Address {
     }
 
     public Address(AddressFormDTO formDTO) {
+        this.id = UUID.randomUUID();
         this.neighborhood = formDTO.neighborhood();
         this.city = formDTO.city();
         this.state = formDTO.state();
@@ -28,7 +30,7 @@ public class Address {
         this.street = formDTO.street();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
