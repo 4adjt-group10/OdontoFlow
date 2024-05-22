@@ -14,7 +14,7 @@ public record SchedulingFormDTO(
         @NotBlank String patientDocument,
         @NotBlank String phone,
         @NotNull UUID procedureId,
-        @NotNull Long professionalId,
+        @NotNull UUID professionalId,
         @NotNull @FutureOrPresent LocalDateTime appointment,
         @NotNull SchedulingStatus status,
         @Nullable String observation

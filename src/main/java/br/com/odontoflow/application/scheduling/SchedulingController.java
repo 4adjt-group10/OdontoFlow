@@ -34,7 +34,7 @@ public class SchedulingController {
     }
 
     @GetMapping("/list/professional/{id}")
-    public ResponseEntity<List<SchedulingDTO>> listByProfessional(@PathVariable("id") Long id,
+    public ResponseEntity<List<SchedulingDTO>> listByProfessional(@PathVariable("id") UUID id,
                                                                   @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
         return ResponseEntity.ok(schedulingService.findAllByProfessionalId(id, date));
     }

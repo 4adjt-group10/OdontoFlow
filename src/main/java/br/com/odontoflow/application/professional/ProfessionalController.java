@@ -33,7 +33,7 @@ public class ProfessionalController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ProfessionalDTO> update(@PathVariable("id") Long id, @RequestBody @Valid ProfessionalFormDTO professionalFormDTO) {
+    public ResponseEntity<ProfessionalDTO> update(@PathVariable("id") UUID id, @RequestBody @Valid ProfessionalFormDTO professionalFormDTO) {
         return ResponseEntity.ok(professionalService.update(id, professionalFormDTO));
     }
 
@@ -48,7 +48,7 @@ public class ProfessionalController {
     }
 
     @GetMapping("/availability/{professionalId}")
-    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilities(@PathVariable("professionalId") Long id) {
+    public ResponseEntity<List<ProfessionalAvailabilityDTO>> listAvailabilities(@PathVariable("professionalId") UUID id) {
         return ResponseEntity.ok(professionalService.listAvailabilitiesByProfessionalId(id));
     }
 

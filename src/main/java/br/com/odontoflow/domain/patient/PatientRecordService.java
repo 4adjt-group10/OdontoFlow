@@ -47,7 +47,7 @@ public class PatientRecordService {
         return patientRecordRepository.findByPatient_Id(patientId).stream().map(PatientRecordDTO::new).toList();
     }
 
-    public List<PatientRecordDTO> findByProfessionalId(Long professionalId){
+    public List<PatientRecordDTO> findByProfessionalId(UUID professionalId){
         return patientRecordRepository.findByProfessional_Id(professionalId).stream().map(PatientRecordDTO::new).toList();
     }
 

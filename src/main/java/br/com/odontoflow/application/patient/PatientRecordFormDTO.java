@@ -10,7 +10,7 @@ public record PatientRecordFormDTO(
         @Nullable String description,
         @NotNull LocalDateTime date,
         @NotNull UUID patientId,
-        @NotNull Long professionalId
+        @NotNull UUID professionalId
 ) {
 
 }

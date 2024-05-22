@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public interface PatientRecordRepository extends JpaRepository<PatientRecord, UUID> {
 
-    List<PatientRecord> findByProfessional_Id(Long id);
+    List<PatientRecord> findByProfessional_Id(UUID id);
 
     List<PatientRecord> findByPatient_Id(UUID id);
 

@@ -7,14 +7,14 @@ import jakarta.persistence.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Entity
 @Table(name = "Professional")
 public class Professional {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private UUID id;
     @Column(name = "name", length = 50, nullable = false, unique = true)
     private String name;
     @Column(name = "document", nullable = false, unique = true)
@@ -38,6 +38,7 @@ public class Professional {
     }
 
     public Professional(ProfessionalFormDTO professionalFormDTO) {
+        this.id = UUID.randomUUID();
         this.name = professionalFormDTO.name();
         this.document = professionalFormDTO.document();
         this.address = new Address(professionalFormDTO.address());
@@ -49,7 +50,7 @@ public class Professional {
         this.availability = availability;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

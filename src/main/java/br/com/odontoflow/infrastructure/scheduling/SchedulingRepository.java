@@ -19,7 +19,7 @@ public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
 
     List<Scheduling> findAllByPatient_Id(UUID id);
 
-    List<Scheduling> findAllByProfessional_Id(Long id);
+    List<Scheduling> findAllByProfessional_Id(UUID id);
 
     @Query(value = "SELECT * FROM Scheduling s WHERE CAST(s.appointment AS DATE) = :date", nativeQuery = true)
     List<Scheduling> findAllByAppointmentsToDay(@Param("date") LocalDate date);
@@ -38,5 +38,5 @@ public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
     List<Scheduling> findAllByPatientIdAndDate(UUID id, LocalDate date);
 
     @Query(value = "SELECT * FROM Scheduling s WHERE s.professional_id =:id and CAST(s.appointment AS DATE) = :date", nativeQuery = true)
-    List<Scheduling> findAllByProfessionalIdAndDate(Long id, LocalDate date);
+    List<Scheduling> findAllByProfessionalIdAndDate(UUID id, LocalDate date);
 }

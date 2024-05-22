@@ -36,7 +36,7 @@ public class PatientRecordController {
     }
 
     @GetMapping("/list/professional/{id}")
-    public ResponseEntity<List<PatientRecordDTO>> listByProfessionalId(@PathVariable("id") Long professionalId) {
+    public ResponseEntity<List<PatientRecordDTO>> listByProfessionalId(@PathVariable("id") UUID professionalId) {
         return ResponseEntity.ok(patientRecordService.findByProfessionalId(professionalId));
     }
 

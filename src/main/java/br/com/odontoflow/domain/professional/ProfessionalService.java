@@ -43,17 +43,20 @@ public class ProfessionalService {
     public ProfessionalDTO register(ProfessionalFormDTO professionalFormDto) {
         List<Procedure> procedures = procedureRepository.findAllById(professionalFormDto.proceduresIds());
         Professional professional = new Professional(professionalFormDto);
-        professionalFormDto.availabilities()
-                .forEach(availability -> professionalAvailabilityRepository.save(new ProfessionalAvailability(professional, availability)));
+        List<ProfessionalAvailability> availabilities = professionalFormDto.availabilities()
+                .stream()
+                .map(availability -> new ProfessionalAvailability(professional, availability))
+                .toList();
         procedures.forEach(procedure -> procedure.addProfessional(professional));
         Address address = addressService.register(professionalFormDto.address());
         professional.setAddress(address);
         professionalRepository.save(professional);
+        professionalAvailabilityRepository.saveAll(availabilities);
         return new ProfessionalDTO(professional);
     }
 
     @Transactional
-    public ProfessionalDTO update(Long id, ProfessionalFormDTO professionalFormDTO) {
+    public ProfessionalDTO update(UUID id, ProfessionalFormDTO professionalFormDTO) {
         List<Procedure> procedures = procedureRepository.findAllById(professionalFormDTO.proceduresIds());
         Professional professional = findProfessionalById(id);
         professionalAvailabilityRepository.deleteAll(professional.getAvailability());
@@ -70,7 +73,7 @@ public class ProfessionalService {
                 .orElseThrow(() -> new EntityNotFoundException("Professional not found"));
     }
 
-    public Professional findProfessionalById(Long id) {
+    public Professional findProfessionalById(UUID id) {
         return professionalRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Professional not found"));
     }
@@ -91,7 +94,7 @@ public class ProfessionalService {
         return professionalAvailabilityRepository.findAll().stream().map(ProfessionalAvailabilityDTO::new).toList();
     }
 
-    public List<ProfessionalAvailabilityDTO> listAvailabilitiesByProfessionalId(Long professionalId) {
+    public List<ProfessionalAvailabilityDTO> listAvailabilitiesByProfessionalId(UUID professionalId) {
         return professionalAvailabilityRepository.findByProfessionalId(professionalId)
                 .stream().map(ProfessionalAvailabilityDTO::new).toList();
     }
@@ -111,8 +114,7 @@ public class ProfessionalService {
                 .stream().map(ProfessionalAvailabilityDTO::new).toList();
     }
 
-    public ProfessionalAvailability findAvailabilityByProfessionalAndAvailableTime(Long professionalId,
-                                                                                     LocalDateTime date) {
+    public ProfessionalAvailability findAvailabilityByProfessionalAndAvailableTime(UUID professionalId, LocalDateTime date) {
         return professionalAvailabilityRepository.findByProfessionalIdAndAvailableTime(professionalId, date)
                 .orElseThrow(() -> new EntityNotFoundException("Professional not available at this time"));
     }
@@ -129,6 +131,7 @@ public class ProfessionalService {
         availability.merge(formDTO);
         return new ProfessionalAvailabilityDTO(availability);
     }
+
     /*
      * A expressão cron "0 0/30 9-20 * * MON-SAT" significa:
      * 0: No início do minuto (segundos).
@@ -139,7 +142,6 @@ public class ProfessionalService {
      * MON-SAT: De segunda a sábado.
      * O método deletePastAvailabilities será executado a cada 30 minutos de segunda a sábado, das 09:00 da manhã às 20:00 da noite.
      * */
-
     @Async
     @Transactional
     @Scheduled(cron = "0 0/30 9-20 * * MON-SAT")

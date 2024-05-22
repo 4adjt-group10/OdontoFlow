@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface ProfessionalAvailabilityRepository extends JpaRepository<ProfessionalAvailability, Long> {
 
-    List<ProfessionalAvailability> findByProfessionalId(Long professionalId);
+    List<ProfessionalAvailability> findByProfessionalId(UUID professionalId);
 
     @Query("SELECT pa FROM ProfessionalAvailability pa WHERE CAST(pa.availableTime AS date) = :date")
     List<ProfessionalAvailability> findByAvailableByDate(@Param("date") LocalDate date);
@@ -34,7 +34,7 @@ public interface ProfessionalAvailabilityRepository extends JpaRepository<Profes
 
     List<ProfessionalAvailability> findAllByAvailableTimeBefore(LocalDateTime now);
 
-    Optional<ProfessionalAvailability> findByProfessionalIdAndAvailableTime(Long professionalId, LocalDateTime date);
+    Optional<ProfessionalAvailability> findByProfessionalIdAndAvailableTime(UUID professionalId, LocalDateTime date);
 
     List<ProfessionalAvailability> findAllByProfessional_Procedures_id(UUID procedureId);
 }

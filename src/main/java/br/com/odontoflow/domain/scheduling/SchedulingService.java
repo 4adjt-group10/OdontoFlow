@@ -81,7 +81,7 @@ public class SchedulingService {
                 .stream().map(SchedulingDTO::new).toList();
     }
 
-    public List<SchedulingDTO> findAllByProfessionalId(Long id, Optional<LocalDate> date) {
+    public List<SchedulingDTO> findAllByProfessionalId(UUID id, Optional<LocalDate> date) {
         return date.map(d -> schedulingRepository.findAllByProfessionalIdAndDate(id, d))
                 .orElseGet(() -> schedulingRepository.findAllByProfessional_Id(id))
                 .stream().map(SchedulingDTO::new).toList();
