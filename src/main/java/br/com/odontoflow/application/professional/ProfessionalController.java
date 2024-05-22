@@ -73,7 +73,7 @@ public class ProfessionalController {
     }
 
     @PutMapping("/availability/update/{id}")
-    public ResponseEntity<ProfessionalAvailabilityDTO> updateAvailability(@PathVariable("id") Long id,
+    public ResponseEntity<ProfessionalAvailabilityDTO> updateAvailability(@PathVariable("id") UUID id,
                                                                           @RequestBody @Valid ProfessionalAvailabilityFormDTO professionalAvailabilityFormDTO) {
         return ResponseEntity.ok(professionalService.updateAvailability(id, professionalAvailabilityFormDTO));
     }

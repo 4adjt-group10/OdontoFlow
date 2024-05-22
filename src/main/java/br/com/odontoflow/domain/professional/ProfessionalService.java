@@ -125,7 +125,7 @@ public class ProfessionalService {
     }
 
     @Transactional
-    public ProfessionalAvailabilityDTO updateAvailability(Long id, ProfessionalAvailabilityFormDTO formDTO) {
+    public ProfessionalAvailabilityDTO updateAvailability(UUID id, ProfessionalAvailabilityFormDTO formDTO) {
         ProfessionalAvailability availability = professionalAvailabilityRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Availability not found"));
         availability.merge(formDTO);

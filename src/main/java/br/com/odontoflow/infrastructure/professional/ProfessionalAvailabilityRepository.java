@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface ProfessionalAvailabilityRepository extends JpaRepository<ProfessionalAvailability, Long> {
+public interface ProfessionalAvailabilityRepository extends JpaRepository<ProfessionalAvailability, UUID> {
 
     List<ProfessionalAvailability> findByProfessionalId(UUID professionalId);
 
