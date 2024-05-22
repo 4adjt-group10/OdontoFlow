@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 import static br.com.odontoflow.domain.scheduling.SchedulingStatus.*;
 import static java.time.LocalDateTime.now;
@@ -85,7 +86,7 @@ public class Scheduling {
         return status;
     }
 
-    public Long getPatientId() {
+    public UUID getPatientId() {
         return this.patient.getId();
     }
 

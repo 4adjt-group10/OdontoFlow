@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -27,7 +28,7 @@ public class SchedulingController {
     }
 
     @GetMapping("/list/patient/{id}")
-    public ResponseEntity<List<SchedulingDTO>> listByPatient(@PathVariable("id") Long id,
+    public ResponseEntity<List<SchedulingDTO>> listByPatient(@PathVariable("id") UUID id,
                                                              @RequestParam(value = "date", required = false) Optional<LocalDate> date) {
         return ResponseEntity.ok(schedulingService.findAllByPatientId(id, date));
     }

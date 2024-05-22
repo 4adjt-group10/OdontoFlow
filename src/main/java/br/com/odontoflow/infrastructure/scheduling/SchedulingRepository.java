@@ -12,11 +12,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
 
-    List<Scheduling> findAllByPatient_Id(Long id);
+    List<Scheduling> findAllByPatient_Id(UUID id);
 
     List<Scheduling> findAllByProfessional_Id(Long id);
 
@@ -34,7 +35,7 @@ public interface SchedulingRepository extends JpaRepository<Scheduling, Long> {
     }
 
     @Query(value = "SELECT * FROM Scheduling s WHERE s.patient_id =:id and CAST(s.appointment AS DATE) = :date", nativeQuery = true)
-    List<Scheduling> findAllByPatientIdAndDate(Long id, LocalDate date);
+    List<Scheduling> findAllByPatientIdAndDate(UUID id, LocalDate date);
 
     @Query(value = "SELECT * FROM Scheduling s WHERE s.professional_id =:id and CAST(s.appointment AS DATE) = :date", nativeQuery = true)
     List<Scheduling> findAllByProfessionalIdAndDate(Long id, LocalDate date);

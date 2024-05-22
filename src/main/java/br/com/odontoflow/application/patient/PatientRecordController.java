@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.CREATED;
 
@@ -30,7 +31,7 @@ public class PatientRecordController {
     }
 
     @GetMapping("/list/patient/{id}")
-    public ResponseEntity<List<PatientRecordDTO>> listByPatientId(@PathVariable("id") Long patientId) {
+    public ResponseEntity<List<PatientRecordDTO>> listByPatientId(@PathVariable("id") UUID patientId) {
         return ResponseEntity.ok(patientRecordService.findByPatientId(patientId));
     }
 

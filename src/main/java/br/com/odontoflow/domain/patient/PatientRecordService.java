@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class PatientRecordService {
@@ -42,7 +43,7 @@ public class PatientRecordService {
         return new PatientRecordDTO(patientRecord);
     }
 
-    public List<PatientRecordDTO> findByPatientId(Long patientId){
+    public List<PatientRecordDTO> findByPatientId(UUID patientId){
         return patientRecordRepository.findByPatient_Id(patientId).stream().map(PatientRecordDTO::new).toList();
     }
 
@@ -56,7 +57,7 @@ public class PatientRecordService {
         return new PatientRecordDTO(patientRecord);
     }
 
-    public PatientRecord findLastByPatientId(Long patientId){
+    public PatientRecord findLastByPatientId(UUID patientId){
         return patientRecordRepository.findFirstByPatient_IdOrderByDateDesc(patientId)
                 .orElseThrow(() -> new EntityNotFoundException("Patient record not found"));
     }

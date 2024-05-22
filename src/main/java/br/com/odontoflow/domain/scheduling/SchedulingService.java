@@ -25,6 +25,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static br.com.odontoflow.domain.scheduling.SchedulingStatus.*;
 
@@ -74,7 +75,7 @@ public class SchedulingService {
         return new SchedulingDTO(scheduling);
     }
 
-    public List<SchedulingDTO> findAllByPatientId(Long id, Optional<LocalDate> date) {
+    public List<SchedulingDTO> findAllByPatientId(UUID id, Optional<LocalDate> date) {
         return date.map(d -> schedulingRepository.findAllByPatientIdAndDate(id, d))
                 .orElseGet(() -> schedulingRepository.findAllByPatient_Id(id))
                 .stream().map(SchedulingDTO::new).toList();
