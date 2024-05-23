@@ -91,6 +91,10 @@ public class Patient {
         this.address = address;
     }
 
+    public boolean hasAddess() {
+        return this.address != null;
+    }
+
     public void merge(PatientFormDTO patientFormDTO) {
         this.name = patientFormDTO.name();
         this.document = patientFormDTO.document();
