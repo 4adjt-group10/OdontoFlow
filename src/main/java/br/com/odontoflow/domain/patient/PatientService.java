@@ -5,7 +5,6 @@ import br.com.odontoflow.application.patient.PatientFormDTO;
 import br.com.odontoflow.domain.address.Address;
 import br.com.odontoflow.domain.address.AddressService;
 import br.com.odontoflow.domain.scheduling.Scheduling;
-import br.com.odontoflow.infrastructure.patient.PatientRecordRepository;
 import br.com.odontoflow.infrastructure.patient.PatientRepository;
 import br.com.odontoflow.infrastructure.scheduling.SchedulingRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -48,6 +47,10 @@ public class PatientService {
     @Transactional
     public PatientDTO update(UUID id, PatientFormDTO patientFormDTO) {
         Patient patient = findPatientById(id);
+        if(!patient.hasAddess()) {
+            Address address = addressService.register(patientFormDTO.address());
+            patient.setAddress(address);
+        }
         patient.merge(patientFormDTO);
         return new PatientDTO(patient);
     }
