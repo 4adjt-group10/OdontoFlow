@@ -79,3 +79,12 @@ Para acessar o banco de dados H2, acesse o seguinte link quando a aplicação es
 ```
 http://localhost:8080/h2-console
 ```
+- user: 
+```
+sa
+
+```
+- password:
+```
+password
+```
