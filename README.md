@@ -1,7 +1,7 @@
 # OdontoFlow
 
 OdontoFlow é uma API de gestão para clínicas de odontologia. 
-A aplicação permite o gerenciamento de profissionjsonais, pacientes, histórico de pacientes, procedimentos e disponibilidades de profissionais.
+A aplicação permite o gerenciamento de profissionais, pacientes, histórico de pacientes, procedimentos e disponibilidades de profissionais.
 
 ## Tecnologias Utilizadas
 
