@@ -108,20 +108,13 @@ public class SchedulingService {
         return new SchedulingDTO(scheduling);
     }
 
-    /*
-     * A expressão cron "0 0/15 9-20 * * MON-SAT" significa:
-     * 0: No início do minuto (segundos).
-     * 0/15: A cada 15 minutos.
-     * 9-20: Entre as 9 da manhã e as 8 da noite (horas).
-     * *: Qualquer dia do mês.
-     * *: Qualquer mês.
-     * MON-SAT: De segunda a sábado.
-     * O método checkAppointments será executado a cada 15 minutos de segunda a sábado, das 09:00 da manhã às 20:00 da noite.
-     * */
-//    @Scheduled(cron = "0 0/15 9-20 * * MON-SAT")
+    /**
+     * This method checks for late appointments and updates their status accordingly.
+     * {@code @Scheduled(cron = "0 0/15 9-20 * * MON-SAT")} means this method will be executed every 15 minutes from Monday to Saturday, between 9 AM and 8 PM.
+     */
     @Async
     @Transactional
-    @Scheduled(cron = "*/5 * * * * *") //Apenas para testes locais, roda a cada 5s
+    @Scheduled(cron = "0 0/15 9-20 * * MON-SAT")
     public void checkLateAppointments() {
         LocalDateTime now = LocalDateTime.now();
         List<Scheduling> lateSchedules = schedulingRepository
@@ -138,20 +131,13 @@ public class SchedulingService {
         });
     }
 
-    /*
-     * A expressão cron "0 0 9-20 * * MON-SAT" significa:
-     * 0: No início do minuto (segundos).
-     * 0: No início da hora (minutos).
-     * 9-20: Entre as 9 da manhã e as 8 da noite (horas).
-     * *: Qualquer dia do mês.
-     * *: Qualquer mês.
-     * MON-SAT: De segunda a sábado.
-     * O método será executado a cada hora, de segunda a sábado, das 9 da manhã às 8 da noite.
-     * */
-//    @Scheduled(cron = "0 0 9-20 * * MON-SAT")
+    /**
+     * This method checks for late schedules and updates their status to canceled.
+     * {@code @Scheduled(cron = "0 0 9-20 * * MON-SAT")} means this method will be executed every hour from Monday to Saturday, between 9 AM and 8 PM.
+     */
     @Async
     @Transactional
-    @Scheduled(cron = "*/20 * * * * *") //Apenas para testes locais, roda a cada 20s
+    @Scheduled(cron = "0 0 9-20 * * MON-SAT")
     public void checkLateSchedulesHourly() {
         List<Scheduling> lateSchedules = schedulingRepository.findAllByStatus(LATE);
         lateSchedules.forEach(scheduling -> {
@@ -162,22 +148,15 @@ public class SchedulingService {
             //TODO: send notification to external service
             System.out.println("Canceled appointment: " + scheduling);
         });
-    }//TODO: Repensar lógica do job: Quem atrasa mais de 15 min mas chega a ir na clínica ou entra em contato para remarcar, pode remarcar
+    }
 
-    /*
-     * A expressão cron "0 0 9-20 * * MON-SAT" significa:
-     * 0: No início do minuto (segundos).
-     * 0: No início da hora (minutos).
-     * 20: às 8 da noite.
-     * *: Qualquer dia do mês.
-     * *: Qualquer mês.
-     * MON-SAT: De segunda a sábado.
-     * O método será executado uma vez por dia, de segunda a sábado, às 20:00 (8 da noite).
-     * */
-    //    @Scheduled(cron = "0 0 20 * * MON-SAT") // Executa uma vez por dia, de segunda a sábado às 20:00
+    /**
+     * This method checks for appointments scheduled in the next 24 hours and calls an external service to send patient notification.
+     * {@code @Scheduled(cron = "0 0 20 * * MON-SAT")} means this method will be executed once per day from Monday to Saturday, at 8 PM.
+     */
     @Async
     @Transactional
-    @Scheduled(cron = "*/30 * * * * *") //Apenas para testes locais, roda a cada 30s
+    @Scheduled(cron = "0 0 20 * * MON-SAT")
     public void checkAppointmentsInNext24Hours() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime next24Hours = now.plusHours(24);

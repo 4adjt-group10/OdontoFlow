@@ -21,7 +21,6 @@ public class Professional {
     private String document;
     @OneToOne
     private Address address;
-    //TODO: Em vez de ter o Type, criar a entidade Dentist e a entidade Assistant?
     @Enumerated(EnumType.STRING)
     private ProfessionalType type;
     @ManyToMany

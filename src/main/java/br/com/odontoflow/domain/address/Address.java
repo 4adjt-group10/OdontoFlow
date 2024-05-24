@@ -8,7 +8,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "Address")
 public class Address {
-//TODO: Tornar embeddable para paciente e profissional? (deixará de ser uma entidade)
+
     @Id
     private UUID id;
     private String street;

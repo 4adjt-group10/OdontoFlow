@@ -28,7 +28,6 @@ public class Scheduling {
     @ManyToOne
     @JoinColumn(name = "professional_id")
     private Professional professional;
-    //TODO: renomear?
     private LocalDateTime appointment;
     @Enumerated(EnumType.STRING)
     private SchedulingStatus status;
