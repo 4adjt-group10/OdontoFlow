@@ -68,11 +68,13 @@ public class PatientService {
                 .orElseGet(() -> patientRepository.save(new Patient(patientName, patientDocument, phone)));
     }
 
-    //    @Scheduled(cron = "0 0 0 * * *") // Executa uma vez por dia à meia-noite
-
+    /**
+     * This method will unblock all patients that have a canceled schedule older than 7 days.
+     * {@code @Scheduled(cron = "0 0 0 * * *")} means this method will be executed every day at midnight.
+     */
     @Async
     @Transactional
-    @Scheduled(cron = "0 0/2 * * * *") //Apenas para testes locais, roda a cada 2 minutos
+    @Scheduled(cron = "0 0 0 * * *")
     public void unblockAllPatients() {
         LocalDateTime sevenDaysAgo = LocalDateTime.now().minusDays(7);
         List<Patient> blockedPatients = patientRepository.findAllByBlockedTrue();
@@ -87,7 +89,5 @@ public class PatientService {
         });
         patientRepository.saveAll(blockedPatients);
     }
-
-    //TODO: Implementar lógica para atualizar dados do paciente caso a ultima consulta tenha ocorrido a mais de 6 meses
 
 }

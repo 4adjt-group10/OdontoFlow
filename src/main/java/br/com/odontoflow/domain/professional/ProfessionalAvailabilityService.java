@@ -80,16 +80,10 @@ public class ProfessionalAvailabilityService {
         professionalAvailabilityRepository.delete(availability);
     }
 
-    /*
-     * A expressão cron "0 0/30 9-20 * * MON-SAT" significa:
-     * 0: No início do minuto (segundos).
-     * 0/30: A cada 30 minutos.
-     * 9-20: Entre as 9 da manhã e as 8 da noite (horas).
-     * *: Qualquer dia do mês.
-     * *: Qualquer mês.
-     * MON-SAT: De segunda a sábado.
-     * O método deletePastAvailabilities será executado a cada 30 minutos de segunda a sábado, das 09:00 da manhã às 20:00 da noite.
-     * */
+    /**
+     * This method deletes past professional availabilities from the database.
+     * {@code @Scheduled(cron = "0 0/30 9-20 * * MON-SAT")} means this method will be executed every 30 minutes from Monday to Saturday, between 9 AM and 8 PM.
+     */
     @Async
     @Transactional
     @Scheduled(cron = "0 0/30 9-20 * * MON-SAT")
