@@ -19,7 +19,7 @@ public class Patient {
     private String document;
     @OneToOne
     private Address address;
-    @Column(name = "phone", length = 14)
+    @Column(name = "patientPhone", length = 14)
     private String phone;
     @Email
     private String email;

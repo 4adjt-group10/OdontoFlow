@@ -55,7 +55,7 @@ public class SchedulingService {
 
     @Transactional
     public SchedulingDTO register(SchedulingFormDTO formDTO) {
-        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.phone());
+        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.patientPhone());
         if(patient.isBlocked()) {
             throw new PatientException("Patient is blocked");
         }
@@ -94,7 +94,7 @@ public class SchedulingService {
     @Transactional
     public SchedulingDTO update(UUID id, SchedulingFormDTO formDTO){
         Scheduling scheduling = findById(id);
-        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.phone());
+        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.patientPhone());
         Procedure procedure = procedureService.findById(formDTO.procedureId());
         Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
         scheduling.merge(new SchedulingUpdateDTO(patient, procedure, professional, formDTO.appointment(), formDTO.status()));
