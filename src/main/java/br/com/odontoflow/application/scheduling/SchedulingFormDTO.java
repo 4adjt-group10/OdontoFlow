@@ -12,7 +12,7 @@ import java.util.UUID;
 public record SchedulingFormDTO(
         @NotBlank String patientName,
         @NotBlank String patientDocument,
-        @NotBlank String phone,
+        @NotBlank String patientPhone,
         @NotNull UUID procedureId,
         @NotNull UUID professionalId,
         @NotNull @FutureOrPresent LocalDateTime appointment,

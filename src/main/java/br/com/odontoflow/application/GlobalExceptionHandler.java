@@ -36,4 +36,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return ResponseEntity.status(BAD_REQUEST).body(error);
     }
+
+    @ExceptionHandler(PatientException.class)
+    public ResponseEntity<StandardError> handlePatientException(PatientException ex, HttpServletRequest request) {
+        StandardError error = new StandardError(Instant.now(),
+                BAD_REQUEST.value(),
+                "Invalid patient",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(BAD_REQUEST).body(error);
+    }
 }
