@@ -39,7 +39,7 @@ A API possui vários endpoints para gerenciar os domínios. Aqui estão alguns e
 - `POST /scheduling/create`: Cria um novo agendamento. Espera um objeto `SchedulingFormDTO` no corpo da requisição.  
 - `GET /scheduling/list/patient/{id}`: Retorna a lista de todos os agendamentos de um paciente específico, identificado pelo ID. Ele também aceita um parâmetro opcional date para filtrar os agendamentos por uma data específica.  
 - `GET /scheduling/list/professional/{id}`: Retorna a lista de todos os agendamentos de um profissional específico, identificado pelo ID. Ele também aceita um parâmetro opcional date para filtrar os agendamentos por uma data específica.  
-- `PUT /scheduling/update/{id}`: Atualiza um agendamento específico, identificado pelo ID. Ele espera um objeto `SchedulingFormDTO` no corpo da requisição.  
+- `PUT /scheduling/update/{id}`: Atualiza um agendamento específico, identificado pelo ID. Ele espera um objeto `SchedulingUpdateDTO` no corpo da requisição.  
 - `PUT /scheduling/done/{id}`: Marca um agendamento específico como concluído. O agendamento é identificado pelo ID.
 
 - `POST /patient-record/create`: Cria um novo registro de paciente. Espera um objeto `PatientRecordFormDTO` no corpo da requisição.
