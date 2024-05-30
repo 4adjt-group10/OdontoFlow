@@ -57,4 +57,9 @@ public class ProcedureService {
     public Procedure findById(UUID id) {
         return procedureRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Procedure not found"));
     }
+
+    public Procedure findByIdAndProfessionalId(UUID id, UUID professional) {
+        return procedureRepository.findByIdAndProfessionalId(id, professional)
+                .orElseThrow(() -> new EntityNotFoundException("Procedure not found"));
+    }
 }

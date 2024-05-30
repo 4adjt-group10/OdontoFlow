@@ -92,12 +92,17 @@ public class SchedulingService {
     }
 
     @Transactional
-    public SchedulingDTO update(UUID id, SchedulingFormDTO formDTO){
+    public SchedulingDTO update(UUID id, SchedulingUpdateDTO updateDTO){
         Scheduling scheduling = findById(id);
-        Patient patient = patientService.findByDocumentOrCreate(formDTO.patientName(), formDTO.patientDocument(), formDTO.patientPhone());
-        Procedure procedure = procedureService.findById(formDTO.procedureId());
-        Professional professional = professionalService.findProfessionalById(formDTO.professionalId());
-        scheduling.merge(new SchedulingUpdateDTO(patient, procedure, professional, formDTO.appointment(), formDTO.status()));
+        Procedure procedure = procedureService
+                .findByIdAndProfessionalId(updateDTO.procedureId(), updateDTO.professionalId());
+        updateDTO.appointment().ifPresentOrElse(appointment -> {
+            ProfessionalAvailability availability = professionalAvailabilityService
+                    .findAvailabilityByProfessionalAndAvailableTime(updateDTO.professionalId(), appointment);
+            scheduling.merge(procedure, availability.getAvailableTime(), updateDTO.status());
+        }, () -> scheduling.merge(procedure, updateDTO.status()));
+
+        schedulingRepository.save(scheduling);
         return new SchedulingDTO(scheduling);
     }
 
@@ -125,6 +130,7 @@ public class SchedulingService {
                 .toList();
         lateSchedules.forEach(scheduling -> {
             scheduling.late();
+            schedulingRepository.save(scheduling);
             patientRecordService.findLastByPatientId(scheduling.getPatientId()).isLate();
             //TODO: send notification to external service
             System.out.println("Late appointment: " + scheduling);

@@ -1,7 +1,6 @@
 package br.com.odontoflow.domain.scheduling;
 
 import br.com.odontoflow.application.RescheduleException;
-import br.com.odontoflow.application.scheduling.SchedulingUpdateDTO;
 import br.com.odontoflow.domain.patient.Patient;
 import br.com.odontoflow.domain.procedure.Procedure;
 import br.com.odontoflow.domain.professional.Professional;
@@ -117,12 +116,13 @@ public class Scheduling {
         }
     }
 
-    public void merge(SchedulingUpdateDTO updateDTO) {
-        reschedule(updateDTO.appointment());
-        this.patient = updateDTO.patient();
-        this.procedure = updateDTO.procedure();
-        this.professional = updateDTO.professional();
-        this.status = updateDTO.status();
+    public void merge(Procedure procedure, SchedulingStatus status) {
+        this.procedure = procedure;
+        this.status = status;
     }
 
+    public void merge(Procedure procedure, LocalDateTime appointment, SchedulingStatus status) {
+        reschedule(appointment);
+        merge(procedure, status);
+    }
 }

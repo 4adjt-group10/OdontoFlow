@@ -41,8 +41,8 @@ public class SchedulingController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<SchedulingDTO> updateSchedule(@PathVariable("id") UUID id,
-                                                        @RequestBody @Valid SchedulingFormDTO formDTO) {
-        return ResponseEntity.ok(schedulingService.update(id, formDTO));
+                                                        @RequestBody @Valid SchedulingUpdateDTO updateDTO) {
+        return ResponseEntity.ok(schedulingService.update(id, updateDTO));
     }
 
     @PutMapping("/done/{id}")
