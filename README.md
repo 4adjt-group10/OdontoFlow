@@ -45,7 +45,7 @@ A API possui vários endpoints para gerenciar os domínios. Aqui estão alguns e
 - `POST /patient-record/create`: Cria um novo registro de paciente. Espera um objeto `PatientRecordFormDTO` no corpo da requisição.
 - `PUT /patient-record/update/{id}`: Atualiza um registro de paciente específico. Espera um objeto `PatientRecordFormDTO` no corpo da requisição.
 - `GET /patient-record/list-all`: Retorna a lista de todos os registros de pacientes.
-- `GET /patient-record/search/{id}`: Retorna um paciente buscando pelo ID.
+- `GET /patient-record/search/{id}`: Retorna um registro de paciente buscando pelo ID.
 - `GET /patient-record/list/patient/{id}`: Retorna a lista de registros de paciente, de acordo com o ID do paciente.
 - `GET /patient-record/list/professional/{id}`: Retorna a lista de registros de paciente, de acordo com o ID do profissional.
 
