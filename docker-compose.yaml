@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: odontoflow
+    ports:
+      - 5432:5432
+  odontoflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
